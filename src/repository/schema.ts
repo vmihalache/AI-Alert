@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { alertsTable } from './repository/repository';
+import { alertsTable } from './repository'; // Adjust the path based on where Repository is defined
 
 const db = drizzle(process.env.DATABASE_URL!);
 
