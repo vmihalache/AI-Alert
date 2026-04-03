@@ -1,6 +1,6 @@
 
-import { NWSAlert } from './types'; // Adjust the path based on where NWSAlert is defined
-import Repository from './src/repository/repository'; // Adjust the path based on where Repository is defined
+import  {NWSAlert} from '../types/sharedTypes'; // Adjust the path based on where NWSAlert is defined
+import {Repository} from './repository/schema'; // Adjust the path based on where Reposito
 export class Ingestion {  
 
   async ingestDataFromWeatherAPi () {
@@ -9,9 +9,9 @@ export class Ingestion {
   const transformed = await raw.json(); 
   
   // The weather API wraps the list in a "features" array
-  const filtetedTransformed = transformed.features; 
+  const transformedAlerts = transformed.features; 
 
-  const stored: NWSAlert[] = filtetedTransformed.map((alert: { properties: NWSAlert }) => ({
+  const stored: NWSAlert[] = transformedAlerts.map((alert: { properties: NWSAlert }) => ({
     ...alert.properties
 }))
   console.log(stored)
