@@ -6,7 +6,7 @@ const db = drizzle(process.env.DATABASE_URL!);
 
 export class Repository {
  static async pushAlerts(cleaned: typeof alertsTable.$inferInsert[]) {
-    await db.insert(alertsTable).values(cleaned);
+    await db.insert(alertsTable).values(cleaned).onConflictDoNothing();
   }
   static async getAlerts() {
     const users = await db.select().from(alertsTable);
