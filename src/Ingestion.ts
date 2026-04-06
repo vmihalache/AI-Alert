@@ -19,7 +19,7 @@ export class Ingestion {
   const stored: NWSAlert[] = transformedAlerts.map((alert: { properties: NWSAlert }) => ({
     ...alert.properties
 }))
-  console.log(stored)
+  // console.log(stored)
   await Repository.seedDbWithStates()
   await Repository.pushAlerts(stored)
   const allAlerts = await Repository.getAlerts();
