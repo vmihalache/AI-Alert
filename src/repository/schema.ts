@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { alertsTable } from './repository'; // Adjust the path based on where Repository is defined
+import { alertsTable, statesTable } from './repository'; // Adjust the path based on where Repository is defined
+import states from './States3.json'
 
 const db = drizzle(process.env.DATABASE_URL!);
 
@@ -12,5 +13,8 @@ export class Repository {
     const users = await db.select().from(alertsTable);
     console.log('Getting all alerts from the database: ', users);
     return users;
+  }
+  static async seedDbWithStates() {
+    await db.insert(statesTable).values(Object.entries(states.states).map(([code, name]) => ({ code, name }))).onConflictDoNothing();
   }
 } 
