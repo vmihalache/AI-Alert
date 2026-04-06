@@ -10,6 +10,7 @@ export class Ingestion {
   
 
   const raw = await fetch(`https://api.weather.gov/alerts/${this.stateCode}`);
+  console.log(`https://api.weather.gov/alerts/${this.stateCode}`)
   const transformed = await raw.json(); 
   
   // The weather API wraps the list in a "features" array
