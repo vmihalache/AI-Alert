@@ -11,7 +11,7 @@ export class Repository {
   }
   static async getAlerts() {
     const users = await db.select().from(alertsTable);
-    console.log('Getting all alerts from the database: ', users);
+    // console.log('Getting all alerts from the database: ', users);
     return users;
   }
   static async seedDbWithStates() {
