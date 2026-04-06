@@ -15,3 +15,7 @@ export const alertsTable = pgTable("alerts", {
     ends: text('ends'),
     instruction: text('instruction')
 });
+export const statesTable = pgTable("states", {
+    name: text('name'),
+    code: text('code').primaryKey()
+})
