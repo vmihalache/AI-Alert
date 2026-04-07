@@ -18,18 +18,15 @@ export class Ingestion {
     console.error('Unexpected API response format: ', transformed);
     return;
   }
-  else {
   const transformedAlerts = transformed.features; 
 
   const stored: NWSAlert[] = transformedAlerts.map((alert: { properties: NWSAlert }) => ({
     ...alert.properties
 }))
   // console.log(stored)
-  await Repository.seedDbWithStates()
   await Repository.pushAlerts(stored)
   const allAlerts = await Repository.getAlerts();
   console.log(allAlerts)
-}
 }
 }
  
