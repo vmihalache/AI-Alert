@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio";
-import {mcpGatewayTool} from "./mcp/mcpGateway.ts";
-import {mcpFacadeTool} from "./mcp/mcpFacade.ts";
+import {McpGateway} from "./mcpGateway";
+import {McpFacade} from "./mcpFacade";
 import { z } from "zod";
 const server = new McpServer({
   name: "weather",
@@ -17,7 +17,7 @@ server.registerTool(
 })
     },
   async ({state_code}: {state_code: string}) => {
-    const mcpGatewayToolInstance = new mcpGatewayTool();
+    const mcpGatewayToolInstance = new McpGateway();
     return await mcpGatewayToolInstance.convertAlerts(state_code);
   });
 server.registerTool(
@@ -30,7 +30,7 @@ server.registerTool(
     }),
   },
   async ({state_name}: {state_name: string}) => {
-    const mcpFacadeToolInstance = new mcpFacadeTool();
+    const mcpFacadeToolInstance = new McpFacade();
     return await mcpFacadeToolInstance.getAlertsForState(state_name);
   }
 );
