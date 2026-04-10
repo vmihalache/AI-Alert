@@ -18,7 +18,15 @@ server.registerTool(
     },
   async ({state_code}: {state_code: string}) => {
     const mcpGatewayToolInstance = new McpGateway();
-    return await mcpGatewayToolInstance.convertAlerts(state_code);
+    const result = await mcpGatewayToolInstance.convertAlerts(state_code);
+    return {
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(result)
+        }
+      ]
+    };
   });
 server.registerTool(
   "mcpfacade",
@@ -31,7 +39,15 @@ server.registerTool(
   },
   async ({state_name}: {state_name: string}) => {
     const mcpFacadeToolInstance = new McpFacade();
-    return await mcpFacadeToolInstance.getAlertsForState(state_name);
+    const result = await mcpFacadeToolInstance.getAlertsForState(state_name);
+    return {
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(result)
+        }
+      ]
+    };
   }
 );
 
