@@ -12,7 +12,5 @@ class HttpGateway {
         return response;
     }
 }
-const httpGateway = new HttpGateway();
-export const raw = httpGateway.fetchData(`https://api.weather.gov/alerts/active/area/${this.stateCode}`, "GET");
-export const ollamaCall = httpGateway.fetchData("http://localhost:11434/api/chat", "POST", {"model":"gemma3:1b","messages":[{"role":"user","content":"test"}]});    
+export const httpGateway = new HttpGateway();
 
