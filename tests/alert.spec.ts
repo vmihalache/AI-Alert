@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import httpGateway from '../src/httpGateway';
+import httpGateway from '../src/CentralGateway.ts';
 
 test('calls ollama', async () => {
 httpGateway.fetchData("http://localhost:11434/api/chat", "POST", {"model":"gemma3:1b","messages":[{"role":"user","content":"test"}]});    
