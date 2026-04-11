@@ -2,10 +2,13 @@ class HttpGateway {
     constructor() {
     }
     async fetchData(url: string, method: string, requestBody?: {}): Promise<any> {
-        const response = await fetch(url, {
+        const fetchOptions: RequestInit = {
             method: method,
-            body: JSON.stringify(requestBody),
-        });
+        };
+        if (requestBody) {
+            fetchOptions.body = JSON.stringify(requestBody);
+        }
+        const response = await fetch(url, fetchOptions);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -13,4 +16,5 @@ class HttpGateway {
     }
 }
 export const httpGateway = new HttpGateway();
+
 
