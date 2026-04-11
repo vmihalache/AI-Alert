@@ -16,7 +16,7 @@ export class Repository {
     return users;
   }
   static async seedDbWithStates() {
-    await db.insert(statesTable).values(Object.entries(states.states).map(([code, name]) => ({ code, name }))).onConflictDoNothing();
+    await db.insert(statesTable).values(Object.entries(states).map(([code, name]) => ({ code, name }))).onConflictDoNothing();
   }
   static async getCodes(ollama_input: string) {
   return db
