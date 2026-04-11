@@ -1,9 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { Ingestion } from '../src/Ingestion';
+import { test } from '@playwright/test';
+import httpGateway from '../src/httpGateway';
 
-test('ingests data from weather API', async () => {
-  const ingestion = new Ingestion();
-  await ingestion.ingestDataFromWeatherAPi();
+test('calls ollama', async () => {
+httpGateway.fetchData("http://localhost:11434/api/chat", "POST", {"model":"gemma3:1b","messages":[{"role":"user","content":"test"}]});    
 });
 
 
