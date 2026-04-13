@@ -24,6 +24,6 @@ export class Repository {
       statesCode: statesTable.code,
     })
     .from(statesTable)
-    .where(eq(sql`{lower({statesTable.name})}`, ollama_input))
+    .where(eq(sql`lower(${statesTable.name})`, ollama_input))
 }   
 } 
