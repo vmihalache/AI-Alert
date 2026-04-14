@@ -2,13 +2,9 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 
 export class MCPClient {
-    serverAddress: Promise<void>
     transport: StdioClientTransport;
-    
     constructor(
-        serverAddress: Promise<void> = Promise.resolve()
     ) {
-        this.serverAddress = serverAddress;
         this.transport = new StdioClientTransport({
             command: "npx",
             args: ["tsx", "./src/mcp/mcpServer.ts"],
