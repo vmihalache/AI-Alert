@@ -4,6 +4,9 @@ class HttpGateway {
     async fetchData(url: string, method: string, requestBody?: {}): Promise<any> {
         const fetchOptions: RequestInit = {
             method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            }
         };
         if (requestBody) {
             fetchOptions.body = JSON.stringify(requestBody);
