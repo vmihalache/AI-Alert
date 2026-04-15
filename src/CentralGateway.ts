@@ -12,9 +12,11 @@ class HttpGateway {
             fetchOptions.body = JSON.stringify(requestBody);
         }
         const response = await fetch(url, fetchOptions);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+       if (!response.ok) {
+        const errorText = await response.text(); // Add this line
+        console.error("OLLAMA SAYS:", errorText); // This tells us exactly what is wrong
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
         return response;
     }
 }
