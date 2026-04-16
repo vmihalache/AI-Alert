@@ -4,35 +4,28 @@ import { McpFacade } from '../src/mcp/mcpFacade';
 import { main } from '../src/mcp/mcpServer';
 import { MCPClient } from '../src/mcp/mcpClient';
 
-test('calls ollama', async () => {
+test('calls qwen2.5:3b', async () => {
 const mcpClient = new MCPClient();
 await mcpClient.connection();
-const response = await mcpClient.client.listTools();
-const ollamaObject = {
-  "model": "gemma3:1b",
+const toolResponse = await mcpClient.client.listTools();
+const mappedTools = toolResponse.tools.map((t: { name: any; description: any; inputSchema: any; }) => ({
+    type: "function",
+    function: {
+      name: t.name,
+      description: t.description,
+      parameters: t.inputSchema 
+    }
+  }));
+const qwen2bObject = {
+  "model": "qwen2.5:3b",
   "messages": [
     { "role": "user", "content": "What is the weather in Virginia?" }
   ],
   "stream": false,
-  "tools": [
-    {
-      "type": "function",
-      "function": {
-        "name": "mcpfacade",
-        "description": "A facade for interacting with the MCP",
-        "parameters": {
-          "type": "object",
-          "properties": {
-            "state_name": { "type": "string", "description": "Full state name like Virginia" }
-          },
-          "required": ["state_name"]
-        }
-      }
-    }
-  ]
+  "tools": mappedTools
 }
 
-await httpGateway.fetchData("http://localhost:11434/api/chat", "POST", ollamaObject)
+await httpGateway.fetchData("http://localhost:11434/api/chat", "POST", qwen2bObject)
   .then((res) => res.json())
   .then((data) => {
     console.log("Response data:", data);
