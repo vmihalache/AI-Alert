@@ -9,7 +9,7 @@ export class Ingestion {
   }
   async ingestDataFromWeatherAPi () {
   
-  const raw = httpGateway.fetchData(`https://api.weather.gov/alerts/active/area/${this.stateCode}`, "GET");
+  const raw = await httpGateway.fetchData(`https://api.weather.gov/alerts/active/area/${this.stateCode}`, "GET");
   const transformed = await raw.json(); 
   
   // The weather API wraps the list in a "features" array
