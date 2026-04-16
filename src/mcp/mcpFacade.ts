@@ -1,7 +1,10 @@
 import { McpGateway } from "./mcpGateway";
 export class McpFacade {
+     mcpGateway = new McpGateway();
     async getAlertsForState(state_name: string) {
-        const mcpGateway = new McpGateway();
-        return await mcpGateway.convertAlerts(state_name);
+        return await this.mcpGateway.convertAlerts(state_name);
+    }
+    async ingestAlertsForState(state_name: string) {
+        await this.mcpGateway.ingestAlertsForState(state_name);
     }
 }
