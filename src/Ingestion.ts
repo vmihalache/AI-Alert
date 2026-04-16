@@ -1,6 +1,7 @@
 
 import  {NWSAlert} from '../types/sharedTypes'; // Adjust the path based on where NWSAlert is defined
 import {Repository} from './repository/schema'; // Adjust the path based on where Reposito
+import httpGateway from ./src/CentralGateway; // Adjust the path based on where CentralGateway is defined
 export class Ingestion {  
   stateCode: string;
   constructor (stateCode: string) {
@@ -8,9 +9,7 @@ export class Ingestion {
   }
   async ingestDataFromWeatherAPi () {
   
-
-  const raw = await fetch(`https://api.weather.gov/alerts/active/area/${this.stateCode}`);
-  // console.log(`https://api.weather.gov/alerts/${this.stateCode}`)
+  const raw = httpGateway.fetchData(`https://api.weather.gov/alerts/active/area/${this.stateCode}`, "GET");
   const transformed = await raw.json(); 
   
   // The weather API wraps the list in a "features" array
@@ -27,6 +26,7 @@ export class Ingestion {
   await Repository.pushAlerts(stored)
   const allAlerts = await Repository.getAlerts();
   console.log(allAlerts)
+  return allAlerts;
 }
 }
  
