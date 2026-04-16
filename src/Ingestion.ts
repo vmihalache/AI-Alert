@@ -26,6 +26,7 @@ export class Ingestion {
   await Repository.pushAlerts(stored)
   const allAlerts = await Repository.getAlerts();
   console.log(allAlerts)
+  return allAlerts;
 }
 }
  
