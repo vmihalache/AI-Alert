@@ -1,7 +1,7 @@
 
 import  {NWSAlert} from '../types/sharedTypes'; // Adjust the path based on where NWSAlert is defined
 import {Repository} from './repository/schema'; // Adjust the path based on where Reposito
-import {httpGateway} from './src/CentralGateway'; // Adjust the path based on where CentralGateway is defined
+import {httpGateway} from './CentralGateway'; // Adjust the path based on where CentralGateway is defined
 export class Ingestion {  
   stateCode: string;
   constructor (stateCode: string) {
