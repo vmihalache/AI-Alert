@@ -8,7 +8,7 @@ test('calls qwen2.5:3b', async () => {
 const mcpClient = new MCPClient();
 await mcpClient.connection();
 const toolResponse = await mcpClient.client.listTools();
-const mappedTools = toolResponse.tools.map((t: { name: any; description: any; inputSchema: any; }) => ({
+const mappedTools = toolResponse.tools.map((t: { name: any; description?: any; inputSchema: any; }) => ({
     type: "function",
     function: {
       name: t.name,
