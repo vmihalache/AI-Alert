@@ -1,24 +1,28 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio";
 import {McpFacade} from "./mcpFacade";
 import { z } from "zod";
+import { WeatherOrchestrator } from "../WeatherOrchestrator";
 const server = new McpServer({
   name: "weather",
   version: "1.0.0",
 });         
 
 server.registerTool(
-  "getAlertsForState",
+  "getStateCode",
   { 
-    title: "get Alerts For State",
-    description: "Retrieves weather alerts. If the user mentions a city or town, identify the US State it belongs to and use that state name here. For example, if the user mentions Richmond, VA, use Virginia as the state name.",
+    title: "Get State Code",
+    description: "This return the US state code based on the users given state name",
      inputSchema: z.object({
-      state_name: z.string().describe("Full state name like Virginia"),
+      state_name: z.string().describe("US state name"),
     }),
   },
   async ({state_name}: {state_name: string}) => {
     const mcpFacadeToolInstance = new McpFacade();
-    const result = await mcpFacadeToolInstance.getAlertsForState(state_name);
+    const result = await mcpFacadeToolInstance.getCodesForState(state_name);
+    // console.error("state name", state_name);
+    // console.error("does this reach here?");
+    // console.error ("DEBUG: Tool getStateCode called with", state_name, "and result", result);
+    // console.error("DEBUG: Tool state code called with", state_name);
     return {
       content: [
         {
@@ -33,14 +37,14 @@ server.registerTool(
   "ingestAlertsForState",
   {
     title: "Ingest Alerts For State",
-    description: "Ingests weather alerts for a given state. If the user mentions a city or town, identify the US State it belongs to and use that state name here. For example, if the user mentions Richmond, VA, use Virginia as the state name.",
+    description: "Fetch and return the current weather and alerts. ",
      inputSchema: z.object({
-      state_name: z.string().describe("Full state name like Virginia")
+      state_code: z.string().describe("the US state code"),
     }),
   },
-  async ({state_name}: {state_name: string}) => {
+  async ({state_code}: {state_code: string}) => {
     const mcpFacadeToolInstance = new McpFacade();
-    await mcpFacadeToolInstance.ingestAlertsForState(state_name);
+    await mcpFacadeToolInstance.ingestAlertsForState(state_code);
     return {
       content: [
         {
@@ -51,15 +55,26 @@ server.registerTool(
     };
   }
 );
-
-
-export async function main() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.error("Weather MCP Server running on stdio");
-}
-
-main().catch((error) => {
-  console.error("Fatal error in main():", error);
-  process.exit(1);
-});
+server.registerTool(
+  "WeatherOrchestrator",
+  {
+    title: "Weather Orchestrator",
+    description: "Orchestrates the process of fetching weather information and alerts for a given state. ",
+     inputSchema: z.object({
+      weather_parameter: z.string().describe("weather parameter"),
+    }),
+  },
+  async ({weather_parameter}: {weather_parameter: string}) => {
+    const orchestrator = new WeatherOrchestrator();
+    const [name, args] = await orchestrator.getExecutionPlan();
+    // Here you would typically call the tool based on the name and args returned by the orchestrator 
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Weather orchestrator executed for parameter: ${[name, args]}`
+        }
+      ]
+    };
+  }
+);
