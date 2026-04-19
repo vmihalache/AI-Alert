@@ -1,4 +1,3 @@
-
 import  {NWSAlert} from '../types/sharedTypes'; // Adjust the path based on where NWSAlert is defined
 import {Repository} from './repository/schema'; // Adjust the path based on where Reposito
 import {httpGateway} from './CentralGateway'; // Adjust the path based on where CentralGateway is defined
@@ -14,7 +13,7 @@ export class Ingestion {
   
   // The weather API wraps the list in a "features" array
   if (!transformed.features || !Array.isArray(transformed.features)) {
-    console.error('Unexpected API response format: ', transformed);
+    // console.error('Unexpected API response format: ', transformed);
     return;
   }
   const transformedAlerts = transformed.features; 
@@ -25,8 +24,7 @@ export class Ingestion {
   // console.log(stored)
   await Repository.pushAlerts(stored)
   const allAlerts = await Repository.getAlerts();
-  console.log(allAlerts)
+  // console.log(allAlerts)
   return allAlerts;
 }
 }
- 
