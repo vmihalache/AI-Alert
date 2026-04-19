@@ -46,12 +46,12 @@ return await this.client.readResource({
 });
 }
 
-getTools = async () => {
-return await this.client.callTool({
-  name: "example-tool",
-  arguments: {
-    arg1: "value"
+getTools = async (toolName: string, toolArguments: {}) => {
+return await this.client.callTool(
+  {
+  name: toolName,
+  arguments: toolArguments
   }
-});
+)
 }
 }
