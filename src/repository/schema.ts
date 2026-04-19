@@ -18,12 +18,13 @@ export class Repository {
   static async seedDbWithStates() {
     await db.insert(statesTable).values(Object.entries(states).map(([code, name]) => ({ code, name }))).onConflictDoNothing();
   }
-  static async getCodes(ollama_input: string) {
-  return db
-    .select({
+  static async getCodes(ollama_input: string) { 
+    const dbName = await db.execute(sql`SELECT current_database()`);
+    console.error("DEBUG: THE DB I AM ACTUALLY HITTING IS:", dbName);
+   return await db.select({
       statesCode: statesTable.code,
     })
     .from(statesTable)
-    .where(eq(sql`lower(${statesTable.name})`, ollama_input))
+    .where(eq(statesTable.name, ollama_input))
 }   
 } 
