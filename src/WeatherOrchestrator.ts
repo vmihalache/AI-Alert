@@ -30,7 +30,7 @@ export class WeatherOrchestrator {
             console.error("TOOL CALLED:", data.message.tool_calls[0].function.name)
            const name = data.message.tool_calls[0].function.name;
            const args = data.message.tool_calls[0].function.arguments
-           return {name, args}
+           return [name, args]
         })
     }
 }
