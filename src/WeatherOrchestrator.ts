@@ -2,7 +2,7 @@ import {MCPClient} from "./mcp/mcpClient";
 import {httpGateway} from "./CentralGateway";   
 
 export class WeatherOrchestrator {
-    WeatherOrchestrator = async () => {
+    getExecutionPlan = async () => {
         const mcpClient = new MCPClient();
         const toolResponse = await mcpClient.client.listTools();
         const mappedTools = toolResponse.tools.map((t) => ({
