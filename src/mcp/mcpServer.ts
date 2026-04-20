@@ -60,11 +60,8 @@ server.registerTool(
   {
     title: "Weather Orchestrator",
     description: "Orchestrates the process of fetching weather information and alerts for a given state. ",
-     inputSchema: z.object({
-      weather_parameter: z.string().describe("weather parameter"),
-    }),
   },
-  async ({weather_parameter}: {weather_parameter: string}) => {
+ async () => {
     const orchestrator = new WeatherOrchestrator();
     const [name, args] = await orchestrator.getExecutionPlan();
     // Here you would typically call the tool based on the name and args returned by the orchestrator 
@@ -72,7 +69,11 @@ server.registerTool(
       content: [
         {
           type: "text",
-          text: `Weather orchestrator executed for parameter: ${[name, args]}`
+          text: `JSON.stringify(${args})}`,
+        },
+        {
+          type: "text",
+          text: name,
         }
       ]
     };
