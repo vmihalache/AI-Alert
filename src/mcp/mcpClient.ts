@@ -1,5 +1,6 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { WeatherOrchestrator } from "../WeatherOrchestrator";
 
 export class MCPClient {
     transport: StdioClientTransport;
@@ -54,4 +55,20 @@ return await this.client.callTool(
   }
 )
 }
+
+executeOrchestratedFlow = async (messagesObject: {}): Promise<{ message?: { tool_calls?: any } }> => {
+    const orchestrator = new WeatherOrchestrator();
+    const agentResponse = await orchestrator.recursiveToolModel(messagesObject);
+      if (!agentResponse.message.tool_calls) {
+        return agentResponse;
+      } 
+      else 
+      {
+      const toolResponse = await this.getTools(agentResponse.message.tool_calls[0].function.name, agentResponse.message.tool_calls[0].function.arguments);
+      return await this.executeOrchestratedFlow(toolResponse)}
+    }
 }
+
+      
+
+
