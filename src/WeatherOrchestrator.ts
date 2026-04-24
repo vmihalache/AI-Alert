@@ -1,6 +1,5 @@
-import {MCPClient} from "./mcp/mcpClient";
 import {httpGateway} from "./CentralGateway";   
-
+import { mcpClient } from "./mcp/mcpClient
 type MCPTool = {
   name: string;
   description?: string;
@@ -9,7 +8,6 @@ type MCPTool = {
 
 export class WeatherOrchestrator {
     recursiveToolModel = async (messagesObject: {}): Promise<{ message?: { tool_calls?: any } }> => {
-    const mcpClient = new MCPClient();
     const toolResponse = await mcpClient.client.listTools() as { tools: MCPTool[] };
     const mappedTools = toolResponse.tools.map((t) => ({
             type: "function",
