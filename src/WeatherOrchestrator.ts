@@ -2,7 +2,7 @@ import {MCPClient} from "./mcp/mcpClient";
 import {httpGateway} from "./CentralGateway";   
 
 export class WeatherOrchestrator {
-    recursiveToolModel = async (messagesObject: {}) => {
+    recursiveToolModel = async (messagesObject: {}): Promise<{ message?: { tool_calls?: any } }> => {
     const mcpClient = new MCPClient();
     const toolResponse = await mcpClient.client.listTools();
     const mappedTools = toolResponse.map((t) => ({
