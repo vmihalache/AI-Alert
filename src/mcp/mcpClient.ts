@@ -59,7 +59,7 @@ return await this.client.callTool(
 executeOrchestratedFlow = async (messagesObject: {}): Promise<{ message?: { tool_calls?: any } }> => {
     const orchestrator = new WeatherOrchestrator();
     const agentResponse = await orchestrator.recursiveToolModel(messagesObject);
-      if (!agentResponse.message.tool_calls) {
+      if (!agentResponse.message?.tool_calls) {
         return agentResponse;
       } 
       else 
@@ -68,6 +68,7 @@ executeOrchestratedFlow = async (messagesObject: {}): Promise<{ message?: { tool
       return await this.executeOrchestratedFlow(toolResponse)}
     }
 }
+export const mcpClient = new MCPClient();
 
       
 
