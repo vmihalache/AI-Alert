@@ -1,11 +1,17 @@
 import {MCPClient} from "./mcp/mcpClient";
 import {httpGateway} from "./CentralGateway";   
 
+type MCPTool = {
+  name: string;
+  description?: string;
+  inputSchema: any;
+};
+
 export class WeatherOrchestrator {
     recursiveToolModel = async (messagesObject: {}): Promise<{ message?: { tool_calls?: any } }> => {
     const mcpClient = new MCPClient();
-    const toolResponse = await mcpClient.client.listTools();
-    const mappedTools = toolResponse.map((t) => ({
+    const toolResponse = await mcpClient.client.listTools() as { tools: MCPTool[] };
+    const mappedTools = toolResponse.tools.map((t) => ({
             type: "function",
             function: {
                 name: t.name,
@@ -23,12 +29,12 @@ export class WeatherOrchestrator {
             "stream": false,
             "tools": mappedTools
         }
-    const getExecutionPlan = async () : Promise<any[]> => {
+    const getExecutionPlan = async () : Promise<{ message?: { tool_calls?: any } }> => {
         const agentResponse = await httpGateway.fetchData("http://localhost:11434/api/chat", "POST", qwen2bObject);
         return agentResponse.json().then((data) => {
             return data
+        }); 
     }
-    )}
     return await getExecutionPlan();
 }
 }       
