@@ -63,18 +63,19 @@ server.registerTool(
   },
  async () => {
     const orchestrator = new WeatherOrchestrator();
-    const [name, args] = await orchestrator.getExecutionPlan();
-    // Here you would typically call the tool based on the name and args returned by the orchestrator 
+    const response = await orchestrator.recursiveToolModel({
+      "model": "qwen2.5:3b",
+      "messages": [ 
+        { "role": "system", "content": "You are a specialized weather orchestrator..." },
+        { "role": "user", "content": "What is the weather in Virginia?" }
+      ],
+    });
     return {
       content: [
         {
           type: "text",
-          text: `JSON.stringify(${args})}`,
+          text: JSON.stringify(response),
         },
-        {
-          type: "text",
-          text: name,
-        }
       ]
     };
   }
