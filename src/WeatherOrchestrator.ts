@@ -1,5 +1,5 @@
 import {httpGateway} from "./CentralGateway";   
-import { mcpClient } from "./mcp/mcpClient
+import { mcpClient } from "./mcp/mcpClient"
 type MCPTool = {
   name: string;
   description?: string;
