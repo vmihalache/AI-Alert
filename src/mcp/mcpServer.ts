@@ -2,11 +2,12 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {McpFacade} from "./mcpFacade";
 import { z } from "zod";
 import { WeatherOrchestrator } from "../WeatherOrchestrator";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio";
 const server = new McpServer({
   name: "weather",
   version: "1.0.0",
-});         
-
+});
+const transport = new StdioServerTransport();
 server.registerTool(
   "getStateCode",
   { 
@@ -80,3 +81,4 @@ server.registerTool(
     };
   }
 );
+server.connect(transport);
