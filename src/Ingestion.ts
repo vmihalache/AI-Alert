@@ -19,11 +19,11 @@ export class Ingestion {
   const transformedAlerts = transformed.features; 
 
   const stored: NWSAlert[] = transformedAlerts.map((alert: { properties: NWSAlert }) => ({
-    ...alert.properties
+    ...alert.properties, stateCode: this.stateCode
 }))
   // console.log(stored)
   await Repository.pushAlerts(stored)
-  const allAlerts = await Repository.getAlerts();
+  const allAlerts = await Repository.getAlerts(this.stateCode);
   // console.log(allAlerts)
   return allAlerts;
 }

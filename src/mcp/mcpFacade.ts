@@ -6,6 +6,6 @@ export class McpFacade {
         return result;
     }
     async ingestAlertsForState(state_code: string) {
-        await this.mcpGateway.ingestAlertsForState(state_code);
+        return await this.mcpGateway.ingestAlertsForState(state_code);
     }
 }

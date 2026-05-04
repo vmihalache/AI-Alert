@@ -1,0 +1,35 @@
+{
+  "name": "ai-alert",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/vmihalache/AI-Alert#readme",
+  "bugs": {
+    "url": "https://github.com/vmihalache/AI-Alert/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vmihalache/AI-Alert.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {},
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0",
+    "@types/pg": "^8.20.0",
+    "drizzle-kit": "^0.31.10",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "dotenv": "^17.4.1",
+    "drizzle-orm": "^0.45.2",
+    "pg": "^8.20.0"
+  }
+}

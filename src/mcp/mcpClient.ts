@@ -1,6 +1,7 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import { WeatherOrchestrator } from "../WeatherOrchestrator";
+import { MessagesObject, WeatherOrchestrator, FlowInput } from "../WeatherOrchestrator";
+
 
 export class MCPClient {
     transport: StdioClientTransport;
@@ -55,21 +56,43 @@ return await this.client.callTool(
   }
 )
 }
-
-executeOrchestratedFlow = async (messagesObject: {}): Promise<{ message?: { tool_calls?: any } }> => {
+executeOrchestratedFlow = async (input: FlowInput, history: {role: string; content: string}[] = []): Promise<{ message?: { tool_calls?: any } }> => {
     const orchestrator = new WeatherOrchestrator();
-    const agentResponse = await orchestrator.recursiveToolModel(messagesObject);
+    console.log("inceput")
+    const inputDecision = input.type === "init" ? input.question : input.messages.messages
+    const agentResponse = await orchestrator.recursiveToolModel(input.type === "init" ? input.question : input.messages);
+    history.push({"role": "user","content": JSON.stringify(inputDecision)})
+
+    // console.log(agentResponse)
       if (!agentResponse.message?.tool_calls) {
         return agentResponse;
       } 
       else 
       {
       const toolResponse = await this.getTools(agentResponse.message.tool_calls[0].function.name, agentResponse.message.tool_calls[0].function.arguments);
-      return await this.executeOrchestratedFlow(toolResponse)}
-    }
+      console.log("toolcontent")
+      console.log(toolResponse.content)
+      console.log("agent response is")
+      console.log(agentResponse.message)
+      console.log("tool calls are")
+      console.log(agentResponse.message.tool_calls)
+      history.push({"role": "assistant","content": JSON.stringify(agentResponse.message)})
+      history.push({"role": "tool","content": JSON.stringify(toolResponse.content)})
+
+      const toolResponseModified:FlowInput= {
+        type: "state",
+        messages:{ model: "qwen2.5:3b",  messages: history },
+        
+      }
+      console.log("final")
+      // console.log(toolResponse)
+      console.log(toolResponseModified)
+      console.log("history content:", JSON.stringify(toolResponseModified.messages.messages, null, 2))
+  return await this.executeOrchestratedFlow(toolResponseModified, history)
+
+  
+}
+}
 }
 export const mcpClient = new MCPClient();
-
-      
-
 

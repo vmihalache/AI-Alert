@@ -45,40 +45,22 @@ server.registerTool(
   },
   async ({state_code}: {state_code: string}) => {
     const mcpFacadeToolInstance = new McpFacade();
-    await mcpFacadeToolInstance.ingestAlertsForState(state_code);
+    const weatherAlerts = await mcpFacadeToolInstance.ingestAlertsForState(state_code);
+    const filteredWeatherAlerts = weatherAlerts?.map((alert: any) => ({
+      event: alert.event,
+      severity: alert.severity,
+      description: alert.description,
+      instruction: alert.instruction,
+    }))
     return {
       content: [
         {
           type: "text",
-          text: "Alerts ingested successfully."
+          text: JSON.stringify(filteredWeatherAlerts)
         }
       ]
     };
   }
 );
-server.registerTool(
-  "WeatherOrchestrator",
-  {
-    title: "Weather Orchestrator",
-    description: "Orchestrates the process of fetching weather information and alerts for a given state. ",
-  },
- async () => {
-    const orchestrator = new WeatherOrchestrator();
-    const response = await orchestrator.recursiveToolModel({
-      "model": "qwen2.5:3b",
-      "messages": [ 
-        { "role": "system", "content": "You are a specialized weather orchestrator..." },
-        { "role": "user", "content": "What is the weather in Virginia?" }
-      ],
-    });
-    return {
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(response),
-        },
-      ]
-    };
-  }
-);
+
 server.connect(transport);

@@ -13,7 +13,8 @@ export const alertsTable = pgTable("alerts", {
     onset: text('onset'),
     expires: text('expires'),
     ends: text('ends'),
-    instruction: text('instruction')
+    instruction: text('instruction'),
+    stateCode: text('stateCode')
 });
 export const statesTable = pgTable("states", {
     name: text('name'),
