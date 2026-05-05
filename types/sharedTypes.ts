@@ -12,3 +12,18 @@ export type NWSAlert = {
     ends: string | null;
     instruction: string | null;
 }
+export type MCPTool = {
+  name: string;
+  description?: string;
+  inputSchema: any;
+};
+export type MessagesObject = {
+  model: string;
+  messages: {
+    role: string;
+    content: string;
+  }[];
+};
+export type FlowInput =
+  | { type: "init"; question: string }
+  | { type: "state"; messages: MessagesObject };

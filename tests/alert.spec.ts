@@ -3,7 +3,7 @@ import {mcpClient} from "../src/mcp/mcpClient";
 
 test('Weather Flow', async () => {
   await mcpClient.connection();
-  const result = await mcpClient.executeOrchestratedFlow({ type: "init", question: "What is the weather in New York?" })
+  const result = await mcpClient.executeOrchestratedFlow({ type: "init", question: "What is the weather in Washington DC?" })
   console.log("result")
   console.log(result);
 });       

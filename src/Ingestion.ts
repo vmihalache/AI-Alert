@@ -9,22 +9,22 @@ export class Ingestion {
   async ingestDataFromWeatherAPi () {
   
   const raw = await httpGateway.fetchData(`https://api.weather.gov/alerts/active/area/${this.stateCode}`, "GET");
+ 
   const transformed = await raw.json(); 
-  
+  if (transformed.features.length === 0) {
+    return { description: `No active alerts for ${this.stateCode}.` };
+  }
   // The weather API wraps the list in a "features" array
   if (!transformed.features || !Array.isArray(transformed.features)) {
-    // console.error('Unexpected API response format: ', transformed);
     return;
   }
   const transformedAlerts = transformed.features; 
-
+  
   const stored: NWSAlert[] = transformedAlerts.map((alert: { properties: NWSAlert }) => ({
     ...alert.properties, stateCode: this.stateCode
 }))
-  // console.log(stored)
   await Repository.pushAlerts(stored)
   const allAlerts = await Repository.getAlerts(this.stateCode);
-  // console.log(allAlerts)
   return allAlerts;
 }
 }
