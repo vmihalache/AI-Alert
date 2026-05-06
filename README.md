@@ -72,4 +72,4 @@ Allows the user to query historical weather data and observe alert trends over t
 
 ## Stack
 
-TypeScript · Playwright · PostgreSQL · Drizzle ORM · MCP SDK · Ollama · NWS API
+TypeScript · Playwright · PostgreSQL · Drizzle ORM · MCP SDK · Ollama(Qwen2.5) · NWS API
