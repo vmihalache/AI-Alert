@@ -1,11 +1,12 @@
 import {httpGateway} from "./CentralGateway";   
 import { mcpClient } from "./mcp/mcpClient"
 import {MCPTool, MessagesObject} from "../types/sharedTypes";
+import 'dotenv/config';
 
 
 
 export class WeatherOrchestrator {
-    recursiveToolModel = async (input: string | MessagesObject): Promise<{ message?: { tool_calls?: any; content?: string; role?: string } }> => {
+    recursiveToolModel = async (input: string | MessagesObject, environment: string, model: string): Promise<{ message?: { tool_calls?: any; content?: string; role?: string } }> => {
     const toolResponse = await mcpClient.client.listTools() as { tools: MCPTool[] };
     const mappedTools = toolResponse.tools.map((t) => ({
             type: "function",
@@ -20,17 +21,30 @@ export class WeatherOrchestrator {
                     : [systemMessage, ...input.messages] 
       
       const qwen2bObject = {
-            "model": "qwen2.5:3b",
+            "model": model,
             "messages":messages,
             "stream": false,
-            "tools": mappedTools
+            "tools": mappedTools,
+            "reasoning_effort": "none"
         }
-    const getExecutionPlan = async () : Promise<{ message?: { tool_calls?: any; content?: string; role?: string } }> => {
-        const agentResponse = await httpGateway.fetchData("http://localhost:11434/api/chat", "POST", qwen2bObject);
+    const getExecutionPlan = async (environmentUrl: string, headers?: {}) : Promise<{ message?: { tool_calls?: any; content?: string; role?: string } }> => {
+        console.log(environmentUrl)
+        console.log(environment)
+        const agentResponse = await httpGateway.fetchData(environmentUrl, "POST", qwen2bObject, headers);
         return agentResponse.json().then((data) => {
-            return data
-        }); 
+            // console.log("Agent response:")
+            // console.log(data)
+            const alteredData = environment === "production" ? data.choices[0].message : data.message
+            return { message: alteredData };
+        })
     }
-    return await getExecutionPlan();
+    if (environment === "production") {
+    return await getExecutionPlan(process.env.ProdEndpoint!, {
+        "Authorization": `Bearer ${process.env.GROQ_API_KEY!}`
+    });
+    } else {
+        environment = "local"
+    return await getExecutionPlan(process.env.LocalEndpoint!)
 }
 }       
+}

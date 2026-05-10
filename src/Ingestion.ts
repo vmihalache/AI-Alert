@@ -7,7 +7,7 @@ export class Ingestion {
     this.stateCode = stateCode;
   }
   async ingestDataFromWeatherAPi () {
-  
+  console.log(`Fetching weather alerts for state code: ${this.stateCode}`);
   const raw = await httpGateway.fetchData(`https://api.weather.gov/alerts/active/area/${this.stateCode}`, "GET");
  
   const transformed = await raw.json(); 

@@ -57,10 +57,10 @@ return await this.client.callTool(
   }
 )
 }
-executeOrchestratedFlow = async (input: FlowInput, history: {role: string; content: string}[] = []): Promise<{ message?: { tool_calls?: any; content?: string; role?: string } }> => {
+executeOrchestratedFlow = async (input: FlowInput, environment: string, model: string, history: {role: string; content: string; tool_call_id?: string}[] = []): Promise<{ message?: { tool_calls?: any; content?: string; role?: string } }> => {
     const orchestrator = new WeatherOrchestrator();
     const inputDecision = input.type === "init" ? input.question : input.messages.messages
-    const agentResponse = await orchestrator.recursiveToolModel(input.type === "init" ? input.question : input.messages);
+    const agentResponse = await orchestrator.recursiveToolModel(input.type === "init" ? input.question : input.messages, environment === "production" ? "production" : "local", model);
     history.push({"role": "user","content": JSON.stringify(inputDecision)})
 
     // console.log(agentResponse)
@@ -69,15 +69,20 @@ executeOrchestratedFlow = async (input: FlowInput, history: {role: string; conte
       } 
       else 
       {
-      const toolResponse = await this.getTools(agentResponse.message.tool_calls[0].function.name, agentResponse.message.tool_calls[0].function.arguments);
-      history.push({"role": "assistant","content": JSON.stringify(agentResponse.message.content)})
-      history.push({"role": "tool","content": JSON.stringify(toolResponse.content)})
+      const toolArgument = agentResponse.message.tool_calls[0].function.arguments;
+      console.log("Raw tool arguments:", toolArgument)
+      const toolArgumentProd = environment === "production" ? JSON.parse(toolArgument) : toolArgument
+      console.log("Tool call detected. Executing tool with arguments:", toolArgumentProd)
+      const toolResponse = await this.getTools(agentResponse.message.tool_calls[0].function.name, toolArgumentProd);
+      console.log("Tool response:", toolResponse)
+      history.push({"role": "assistant","content": JSON.stringify(agentResponse.message)})
+      history.push({"role": "tool","content": typeof toolResponse.content === 'string' ? toolResponse.content : JSON.stringify(toolResponse.content), tool_call_id: agentResponse.message.tool_calls[0].id})
 
       const toolResponseModified:FlowInput= {
         type: "state",
         messages:{ model: "qwen2.5:3b",  messages: history },
       }
-  return await this.executeOrchestratedFlow(toolResponseModified, history)
+  return await this.executeOrchestratedFlow(toolResponseModified,environment, model, history);
 }
 }
 }
