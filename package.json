@@ -19,7 +19,7 @@
   },
   "scripts": {
       "build": "tsc",
-      "start": "node dist/src/express/express.js"
+      "start": "node dist/src/express/express.d.ts"
 },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
