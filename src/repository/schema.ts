@@ -18,6 +18,7 @@ export class Repository {
     await db.insert(statesTable).values(Object.entries(states).map(([code, name]) => ({ code, name }))).onConflictDoNothing();
   }
   static async getCodes(ollama_input: string) { 
+    console.log("Repository received input:", ollama_input);
     if (ollama_input.toLowerCase().includes("washington dc") || ollama_input.toLowerCase().includes("district of columbia")) {
       ollama_input = "District of Columbia";
     }

@@ -6,6 +6,7 @@ class HttpGateway {
             method: method,
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
                 ...headersAdded
             }
         };

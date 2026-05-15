@@ -1,12 +1,13 @@
 import {httpGateway} from "./CentralGateway";   
 import { mcpClient } from "./mcp/mcpClient"
 import {MCPTool, MessagesObject} from "../types/sharedTypes";
-import 'dotenv/config';
 
 
 
 export class WeatherOrchestrator {
-    recursiveToolModel = async (input: string | MessagesObject, environment: string, model: string): Promise<{ message?: { tool_calls?: any; content?: string; role?: string } }> => {
+    recursiveToolModel = async (input: string | MessagesObject, environment: any, model: string ): Promise<{
+      choices: any; message?: { tool_calls?: any; content?: string; role?: string } 
+}> => {
     const toolResponse = await mcpClient.client.listTools() as { tools: MCPTool[] };
     const mappedTools = toolResponse.tools.map((t) => ({
             type: "function",
@@ -21,30 +22,17 @@ export class WeatherOrchestrator {
                     : [systemMessage, ...input.messages] 
       
       const qwen2bObject = {
-            "model": model,
+            "model": "qwen/qwen3-32b",
             "messages":messages,
             "stream": false,
-            "tools": mappedTools,
-            "reasoning_effort": "none"
+            "tools": mappedTools
         }
-    const getExecutionPlan = async (environmentUrl: string, headers?: {}) : Promise<{ message?: { tool_calls?: any; content?: string; role?: string } }> => {
-        console.log(environmentUrl)
-        console.log(environment)
-        const agentResponse = await httpGateway.fetchData(environmentUrl, "POST", qwen2bObject, headers);
-        return agentResponse.json().then((data) => {
-            // console.log("Agent response:")
-            // console.log(data)
-            const alteredData = environment === "production" ? data.choices[0].message : data.message
-            return { message: alteredData };
-        })
+    const getExecutionPlan = async () : Promise<{ choices: []; message?: { tool_calls?: any; content?: string; role?: string } }> => {
+        const agentResponse = await httpGateway.fetchData(process.env.ProdEndpoint ?? "http://localhost:11434/api/chat", "POST", qwen2bObject);
+        return agentResponse.json().then((data: { choices: []; message?: { tool_calls?: any; content?: string; role?: string } }) => {
+            return data;
+        });
     }
-    if (environment === "production") {
-    return await getExecutionPlan(process.env.ProdEndpoint!, {
-        "Authorization": `Bearer ${process.env.GROQ_API_KEY!}`
-    });
-    } else {
-        environment = "local"
-    return await getExecutionPlan(process.env.LocalEndpoint!)
+    return await getExecutionPlan();
 }
 }       
-}
