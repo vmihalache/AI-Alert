@@ -39,7 +39,7 @@ import { server } from '../mcp/mcpServer'
             console.log(`Example app listening on port ${this.port}`)
         })
         try {
-        // await mcpClient.connection()   
+        await mcpClient.connection()   
         } catch (error) {
             console.error('Error connecting MCP client:', error);
         }
