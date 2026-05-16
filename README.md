@@ -4,11 +4,15 @@
 
 **Scope:** Provides state-level weather alert monitoring for the US based on user queries.
 
+**Live API:** `https://ai-alert-production.up.railway.app/api/weather`
+
 ---
 
 ## Overview
 
-A local AI agent based system that draws results from the NWS (US National Weather Service) API to show relevant advice and alerts to people who want to know if it is safe to travel through a certain US state.
+A cloud-deployed AI agent system that draws results from the NWS (US National Weather Service) API to show relevant advice and alerts to people who want to know if it is safe to travel through a certain US state.
+
+The system uses a **Model Context Protocol (MCP) server** to connect a cloud-hosted AI model (Groq / Qwen3-32B) to a PostgreSQL database, enabling natural language queries about active weather alerts across the United States.
 
 ---
 
@@ -17,7 +21,7 @@ A local AI agent based system that draws results from the NWS (US National Weath
 - Results are shown only if the NWS API returns data for the requested state
 - Queries are reliable only if they mention the state name — not lower level locations or latitude/longitude geo information
 - Queries are not reliable if the user wants reports based on complex dates or timelines
-- Response quality depends on the local AI model and may vary between runs
+- Response quality depends on the AI model and may vary between runs
 
 ---
 
@@ -65,11 +69,29 @@ Allows the user to query historical weather data and observe alert trends over t
 | Component | Status |
 |-----------|--------|
 | MCP Pipeline with Local AI | ✅ Implemented |
-| Express Endpoint Creation | 🔲 Not done |
-| Production Deployment and Configuration | 🔲 Not done |
+| MCP Pipeline with Cloud AI (Groq) | ✅ Implemented |
+| Express API Server | ✅ Implemented |
+| Railway Deployment | ✅ Live |
+| Neon PostgreSQL | ✅ Live |
+| React Frontend | 🔲 Not done |
+
+---
+
+## Usage
+
+Send a POST request to the live API:
+
+```
+POST https://ai-alert-production.up.railway.app/api/weather
+Content-Type: application/json
+
+{
+  "question": "What is the weather in Virginia?"
+}
+```
 
 ---
 
 ## Stack
 
-TypeScript · Playwright · PostgreSQL · Drizzle ORM · MCP SDK · Ollama(Qwen2.5) · NWS API
+TypeScript · Playwright · PostgreSQL (Neon) · Drizzle ORM · MCP SDK · Groq (Qwen3-32B) · NWS API · Express · Railway

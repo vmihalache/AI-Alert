@@ -5,60 +5,70 @@
 ## Architecture Overview
 
 ```
-User Query
+External Client (Postman / React)
     │
     ▼
-┌─────────────────────┐
-│   Playwright Spec   │  ← Orchestrator — drives the test flow
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│     MCP Client      │  ← Manages connection + conversation history
-│  executeOrchestrated│
-│       Flow()        │
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│  WeatherOrchestrator│  ← Sends messages + tools to local AI
-│  recursiveToolModel │
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│   Ollama / Qwen     │  ← Local AI model, decides which tool to call
-└────────┬────────────┘
-         │ tool_calls
-         ▼
-┌─────────────────────┐
-│    MCP Server       │  ← Exposes tools via MCP protocol
-│  getStateCode       │
-│  ingestAlertsFor    │
-│       State         │
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│     MCP Facade      │  ← Orchestrates Gateway + Ingestion
-└────────┬────────────┘
-         │
-    ┌────┴────┐
-    ▼         ▼
-┌────────┐ ┌──────────┐
-│Gateway │ │Ingestion │  ← Gateway resolves state code
-│        │ │          │    Ingestion fetches from NWS
-└───┬────┘ └────┬─────┘
-    │            │
-    ▼            ▼
-┌─────────────────────┐
-│     Repository      │  ← Drizzle ORM — all DB operations
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│     PostgreSQL      │  ← alerts table + states table
-└─────────────────────┘
+┌─────────────────────────────────────────┐
+│            Railway Container            │
+│                                         │
+│  ┌─────────────────────┐                │
+│  │   Express Server    │  port $PORT    │
+│  │   /api/weather      │                │
+│  │   /mcp              │                │
+│  └────────┬────────────┘                │
+│           │                             │
+│           ▼                             │
+│  ┌─────────────────────┐                │
+│  │  MCP Client         │  localhost     │
+│  │  executeOrchestrated│  /mcp          │
+│  │       Flow()        │                │
+│  └────────┬────────────┘                │
+│           │                             │
+│           ▼                             │
+│  ┌─────────────────────┐                │
+│  │  WeatherOrchestrator│                │
+│  │  recursiveToolModel │                │
+│  └────────┬────────────┘                │
+│           │                             │
+│           ▼                             │
+│  ┌─────────────────────┐                │
+│  │    MCP Server       │                │
+│  │  getStateCode       │                │
+│  │  ingestAlertsFor    │                │
+│  │       State         │                │
+│  └────────┬────────────┘                │
+│           │                             │
+│           ▼                             │
+│  ┌─────────────────────┐                │
+│  │     MCP Facade      │                │
+│  └────────┬────────────┘                │
+│           │                             │
+│      ┌────┴────┐                        │
+│      ▼         ▼                        │
+│  ┌────────┐ ┌──────────┐                │
+│  │Gateway │ │Ingestion │                │
+│  └───┬────┘ └────┬─────┘                │
+│      │            │                     │
+│      ▼            ▼                     │
+│  ┌─────────────────────┐                │
+│  │     Repository      │                │
+│  │    Drizzle ORM      │                │
+│  └─────────────────────┘                │
+└─────────────────┬───────────────────────┘
+                  │
+        ┌─────────┴──────────┐
+        ▼                    ▼
+┌──────────────┐    ┌──────────────────┐
+│  Neon        │    │  Groq API        │
+│  PostgreSQL  │    │  Qwen3-32B       │
+│  (cloud)     │    │  (cloud)         │
+└──────────────┘    └──────────────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │   NWS API        │
+                    │  (public, free)  │
+                    └──────────────────┘
 ```
 
 ---
@@ -67,16 +77,17 @@ User Query
 
 | Component | Responsibility |
 |-----------|---------------|
-| Playwright Spec | Test orchestration and assertions |
-| MCP Client | Manages Ollama connection and conversation history |
-| WeatherOrchestrator | Sends prompts and tool definitions to the AI model |
-| MCP Server | Exposes tools via Model Context Protocol |
+| Express Server | Public HTTP entry point — `/api/weather` and `/mcp` routes |
+| MCP Client | Manages connection to MCP server via Streamable HTTP |
+| WeatherOrchestrator | Sends prompts and tool definitions to Groq AI |
+| MCP Server | Exposes tools via Model Context Protocol over HTTP |
 | MCP Facade | Coordinates Gateway and Ingestion per user query |
 | MCP Gateway | Resolves state name to NWS state code via Postgres |
 | Ingestion | Fetches alerts from NWS API and stores them |
 | Repository | All database read/write operations via Drizzle ORM |
-| PostgreSQL | Persistent storage for alerts and states |
-| Ollama + Qwen | Local AI model — free, no API costs |
+| Groq / Qwen3-32B | Cloud AI model — tool calling and response generation |
+| Neon PostgreSQL | Cloud database — alerts and states tables |
+| NWS API | Live US weather alerts by state — free, no key required |
 
 ---
 
@@ -95,16 +106,17 @@ User Query
 ## Data Flow
 
 ```
-1. User asks: "What is the weather in Virginia?"
-2. Orchestrator sends question + tool definitions to Qwen
-3. Qwen calls getStateCode("Virginia")
-4. Gateway queries states table → returns "VA"
-5. Qwen calls ingestAlertsForState("VA")
-6. Ingestion fetches https://api.weather.gov/alerts/active/area/VA
-7. Alerts stored in PostgreSQL with stateCode = "VA"
-8. Filtered alerts returned to Qwen
-9. Qwen formulates human readable answer
-10. Playwright asserts on response content
+1. Client POSTs to /api/weather with { question: "What is the weather in Virginia?" }
+2. Express validates the request and calls executeOrchestratedFlow
+3. Orchestrator sends question + tool definitions to Groq Qwen3-32B
+4. Groq calls getStateCode("Virginia")
+5. Gateway queries states table in Neon → returns "VA"
+6. Groq calls ingestAlertsForState("VA")
+7. Ingestion fetches https://api.weather.gov/alerts/active/area/VA
+8. Alerts stored in Neon PostgreSQL with stateCode = "VA"
+9. Filtered alerts returned to Groq
+10. Groq formulates human readable answer
+11. Express returns the response to the client
 ```
 
 ---
@@ -126,7 +138,7 @@ onset         text
 expires       text
 ends          text
 instruction   text
-stateCode     text  FK → states.code
+stateCode     text
 
 states
 ──────────────────────────
@@ -136,3 +148,39 @@ name          text
 
 ---
 
+## Deployment
+
+| Component | Platform | Notes |
+|-----------|----------|-------|
+| Express + MCP Server | Railway | Auto-deploys from GitHub main branch |
+| PostgreSQL | Neon | Serverless, free tier |
+| AI Model | Groq | Qwen3-32B, free tier, 14400 req/day |
+| NWS API | Public | No key required |
+
+---
+
+## Transport
+
+The MCP server uses **Streamable HTTP transport** (MCP protocol 2025-06-18). A fresh `StreamableHTTPServerTransport` instance is created per request — allowing the MCP server to handle concurrent connections without transport ownership conflicts.
+
+Internal MCP communication (client → server) uses `localhost` within the Railway container. External clients communicate only with the Express `/api/weather` endpoint.
+
+---
+
+## Security
+
+| Measure | Implementation |
+|---------|---------------|
+| Rate limiting | 10 requests per minute per IP via `express-rate-limit` |
+| CORS | Configured via `cors` middleware |
+| Input validation | Empty question rejected with 400 before reaching orchestrator |
+| Credentials | All secrets via environment variables — never in code or git |
+
+---
+
+## Known Limitations
+
+- Response consistency varies due to the non-deterministic nature of AI models
+- Queries must reference a US state name — city or coordinate queries not yet supported
+- Historical data queries not supported — current and near-future alerts only
+- Free tier rate limits apply on both Groq and Railway
