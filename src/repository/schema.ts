@@ -11,7 +11,7 @@ export class Repository {
     await db.insert(alertsTable).values(cleaned).onConflictDoNothing();
   }
   static async getAlerts(stateCode?:any) {
-    const users = await db.select().from(alertsTable).where(eq(alertsTable.stateCode, stateCode) ) 
+    const users = await db.select().from(alertsTable).where(eq(alertsTable.stateCode, stateCode)).limit(3) 
     return users;
   }
   static async seedDbWithStates() {
