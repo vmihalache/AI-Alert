@@ -2,19 +2,25 @@ import { ComposableMap, Geographies, Geography, Marker, useMapContext, ZoomableG
 import { geoCentroid, type ExtendedFeature, type GeoGeometryObjects } from "d3-geo"
 import React, {useState} from "react";
 
+export type MapChartProps = {
+  appStateHandler: (state: string) => void;
+  isLoading: boolean
+};
 
 const geoUrl =
   "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json"
 
-export default function MapChart() {
-  const [activeHoverState, setActiveHoverState] = useState(null);
-  function handleStateClick(geoProp: any) {
-    console.log(geoProp);
+export default function MapChart({appStateHandler, isLoading}: MapChartProps) {
+  const [activeHoverState, setActiveHoverState] = useState<string | null>(null);
+ async function handleStateClick(geoProp: any) {
+    appStateHandler(geoProp.properties.name);
   }
+
 function getCoordinates(geo: any) {
    const coords = geoCentroid(geo)
    return coords
 }
+
 function getStateName(geo: any, currentFontSize: number) { 
       return (
         <text 
@@ -28,7 +34,7 @@ function getStateName(geo: any, currentFontSize: number) {
       );
   }
   return (
-  <ComposableMap projection="geoAlbers">
+  <ComposableMap projection="geoAlbers"> 
       <Geographies geography={geoUrl}>
         {({ geographies }) => geographies.map((geo) => {
           const isThisStateHovered = activeHoverState === geo.properties.name;
@@ -41,11 +47,15 @@ function getStateName(geo: any, currentFontSize: number) {
               <Geography
                 geography={geo}
                 style={{
-                  default: { fill: "#2D3748", stroke: "#ffffff", strokeWidth: 0.5, outline: "none" },
-                  hover: { fill: "#4A5568", stroke: "#ffffff", strokeWidth: 0.5, outline: "none" },
-                  pressed: { fill: "#1A202C", stroke: "#ffffff", strokeWidth: 0.5, outline: "none" }
+                  
+                  default: { fill: "#2D3748", stroke: "#ffffff", strokeWidth: 0.5, outline: "none",     pointerEvents: isLoading ? "none" : "auto",
+},
+                  hover: { fill: "#4A5568", stroke: "#ffffff", strokeWidth: 0.5, outline: "none" ,    pointerEvents: isLoading ? "none" : "auto",
+},
+                  pressed: { fill: "#1A202C", stroke: "#ffffff", strokeWidth: 0.5, outline: "none",     pointerEvents: isLoading ? "none" : "auto",
+}
     }}
-                onClick={() => handleStateClick(geo)}
+                onClick={!isLoading ? () => handleStateClick(geo) : undefined}
                 onMouseEnter={() => {
                 console.log("triggered hover for:", geo.properties.name);
                 setActiveHoverState(geo.properties.name);
