@@ -1,52 +1,157 @@
 .speech-bubble {
+    line-height: 1.6;
+    font-size: 16px;
+    color: white;
     background: #28959f;
 
-    width: 420px;
-    min-height: 220px;
+    width: 340px; /* Slightly narrower to prevent pushing off the screen edge */
+    min-height: 260px; /* Let it expand dynamically if the text gets long */
+    box-sizing: border-box;
 
-    border-radius: 80px;
-
-    padding: 35px;
-
+    border-radius: 40px; /* 80px radius on a 380px width makes it pill-shaped, 40-50px is cleaner */
+    padding: 30px;
     position: relative;
-
-    margin-top: 120px;
-
+    margin-top: 20px;
     box-shadow: 0 12px 24px rgba(0,0,0,.15);
 
     display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+    
+    /* Avoid hard overflow hides that chop off your absolute elements */
+    overflow: visible; 
+   
+    /* Shifting upwards slightly to align near the analyst's head level */
+    transform: translateY(-40px); 
+}
+
+/* 🧼 CLEANED UP RETRO-TRAIL BUBBLES: Directing down-left toward the analyst */
+
+.speech-bubble::-webkit-scrollbar {
+    width: 10px;
+}
+
+.speech-bubble::-webkit-scrollbar-track {
+    background: #1f6f75;
+    border-radius: 10px;
+}
+
+.speech-bubble::-webkit-scrollbar-thumb {
+    background: #129936;
+    border-radius: 10px;
+}
+.speech-bubble {
+    white-space: pre-wrap;
+}
+.speech-bubble p {
+    margin-bottom: 12px;
+}
+
+.speech-bubble strong {
+    font-weight: 700;
+}
+
+.speech-bubble ul {
+    padding-left: 24px;
+}
+
+.speech-bubble li {
+    margin-bottom: 10px;
+}
+.markdown-typewriter {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  line-height: 1.6;
+  color: #333;
+}
+
+.markdown-typewriter h1 {
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+.markdown-typewriter code {
+  background-color: #f8f9fa;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+.weather-container {
+    display: flex;
     align-items: center;
-    justify-content: center;
-
-    text-align: center;
+    gap: 20px;
 }
-.speech-bubble::before {
-    content: "";
 
-    position: absolute;
-
-    width: 35px;
-    height: 35px;
-
+.thought-bubbles div {
+    background: rgb(95, 9, 222);
     border-radius: 50%;
-
-    background: #28959f;
-
-    bottom: -25px;
-    left: 120px;
-}
-.speech-bubble::after {
-    content: "";
-
-    position: absolute;
-
+    /* animation: bubbleUp 1.5s ease-in-out infinite; */
+    animation-delay: 0s;
     width: 20px;
     height: 20px;
+    background: rgb(6, 2, 96);
+    color: violet;
+    /* left: -100px;
+    top: 50px; */
+    position: absolute;
+}
+   
+.thought-1 {
+   position: absolute;
+    left: -400px;
+    top: -70px;
+    animation: bubbleUp 2s ease-in-out infinite;
+    animation-delay: 0s;
+}
 
-    border-radius: 50%;
+.thought-2 {
+    position: absolute;
+    left: -340px;
+    top:  -130px;
+    animation: bubbleUp 2s ease-in-out infinite;
+    animation-delay: .2s;
+}
 
-    background: #28959f;
+.thought-3 {
+    position: absolute;
+    left: -280px;
+    top:  -150px;
+    animation: bubbleUp 2s ease-in-out infinite;
+    animation-delay: .4s;
+}
 
-    bottom: -50px;
-    left: 95px;
+.thought-4 {
+    position: absolute;
+    left: -180px;
+    top:  -120px;
+    animation: bubbleUp 2s ease-in-out infinite;
+    animation-delay: .6s;
+}
+
+.thought-5 {
+    position: absolute;
+    left: -110px;
+    top:  -60px;
+    animation: bubbleUp 2s ease-in-out infinite;
+    animation-delay: .8s;
+}
+.thought-bubbles {
+    position: relative
+}
+/* animation for the thought bubbles to create a smooth "bubbling up" effect */
+@keyframes bubbleUp {
+    0% {
+        opacity: 0;
+        transform: scale(.5);
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
 }

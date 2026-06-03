@@ -1,37 +1,64 @@
-import ReactMarkdown from "react-markdown";
-import { ReactTyped } from "react-typed";
 import './WeatherBubble.css'
+import './weatherSpinner.css'
+import './analyst.css'
+import MarkdownTypewriter from 'markdown-typewriter-react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import React from 'react';
+
+
 
 interface WeatherPanelProps {
   responseProp: string | null;
+  isLoading: boolean
 }
 
-export default function WeatherPanel({ responseProp }: WeatherPanelProps) {
+export default function WeatherPanel({ responseProp, isLoading }: WeatherPanelProps) {
   const defaultText = "Select a state on the map to view active weather alerts.";
   const currentText = responseProp ? responseProp : defaultText;
-
+  const dotLottieRef = React.useRef<any>(null);
+  
   return (
+    <div className="weather-container">
+        <div className="analyst">
+         <DotLottieReact
+      src="../src/lottieAnimation/lottieWeather.json"
+      loop
+       dotLottieRefCallback={(dotLottie) => {
+          dotLottieRef.current = dotLottie;
+          dotLottieRef.current?.pause()
+       }}
+    />
+    </div>
     <div className="speech-bubble">
-      {/* ⚡ THE SOLUTION: 
-          We let ReactMarkdown run first to convert headers and bullet lists 
-          into clean, native HTML blocks. Then ReactTyped targets those nodes 
-          and handles the typing effect completely inside the browser DOM 
-          with ZERO state changes or re-renders! */}
-      <ReactTyped
-        key={currentText} // Forces typewriter to reset cleanly when text changes
-        strings={[currentText]}
-        typeSpeed={8}
-        showCursor={false}
-        loop={false}        // Stops it from looping back and deleting itself when finished    // Guarantees text blocks won't dissolve or fade out
-        backSpeed={0}      // Disables backward calculation speed entirely
-        backDelay={9999999} //
-         fadeOut = {true}
-      >
-        {/* We place our Markdown block straight inside as the native child! */}
+      {isLoading ? (
         <div>
-          <ReactMarkdown>{currentText}</ReactMarkdown>
+         {dotLottieRef.current?.play()}
+        <div className="loading-container">
+          <div className="spinner" />
+          <p>Gathering weather data...</p>
         </div>
-      </ReactTyped>
+        <div className="thought-bubbles">
+            <div className="thought-1"></div>
+            <div className="thought-2"></div>
+            <div className="thought-3"></div>
+            <div className="thought-4"></div>
+            <div className="thought-5"></div>
+          </div>
+        </div>
+      ) : (
+            <MarkdownTypewriter
+              style={{ fontSize: '18px', lineHeight: '1.6' }}
+              delay={10}
+              markdown={currentText}
+              charsPerTick={1}
+              onComplete={() => {
+    dotLottieRef.current?.stop()
+    console.log("ON COMPLETE FIRED");
+              }}
+    />      
+      )}
+    </div>
     </div>
   );
 }
+
