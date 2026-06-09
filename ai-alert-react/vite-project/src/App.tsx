@@ -6,14 +6,13 @@ import { useState } from 'react';
 
 
 export const App = () => {
-    const [usState, setUsState] = useState("");
+   
     const [apiResponse, setApiResponse] = useState("")
     const [isLoading, setLoadingState]=useState(false)
-    const [currentPartialText, setCurrentPartialText] = useState("")    
+    const [animationKey, setAnimationKey] = useState(0);
     const url = "https://ai-alert-production.up.railway.app/api/weather"
     const handleGetUsState = async (usStateParam: string) => {
         
-        setUsState(usStateParam)
         setLoadingState(true)        
           try {
         const question = { "question": `What is the weather in ${usStateParam}?`}
@@ -32,12 +31,12 @@ export const App = () => {
         <div>
         <div className = "container" >
             <div className="child-one">
-            <MapChart appStateHandler={handleGetUsState}
+            <MapChart appStateHandler={handleGetUsState} setAnimationKey = {setAnimationKey}
              isLoading = {isLoading}
             />
             </div>
             <div className="child-two">
-            <WeatherPanel responseProp={apiResponse} isLoading={isLoading}/>
+            <WeatherPanel responseProp={apiResponse} isLoading={isLoading} animationKey={animationKey} />
             </div>
         </div>
         </div>

@@ -1,19 +1,21 @@
-import { ComposableMap, Geographies, Geography, Marker, useMapContext, ZoomableGroup  } from "react-simple-maps"
-import { geoCentroid, type ExtendedFeature, type GeoGeometryObjects } from "d3-geo"
+import { ComposableMap, Geographies, Geography, Marker  } from "react-simple-maps"
+import { geoCentroid } from "d3-geo"
 import React, {useState} from "react";
 
 export type MapChartProps = {
   appStateHandler: (state: string) => void;
   isLoading: boolean
+  setAnimationKey: any
 };
 
 const geoUrl =
   "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json"
 
-export default function MapChart({appStateHandler, isLoading}: MapChartProps) {
+export default function MapChart({appStateHandler, isLoading, setAnimationKey}: MapChartProps) {
   const [activeHoverState, setActiveHoverState] = useState<string | null>(null);
  async function handleStateClick(geoProp: any) {
     appStateHandler(geoProp.properties.name);
+    setAnimationKey((prev: number) => prev + 1);
   }
 
 function getCoordinates(geo: any) {
