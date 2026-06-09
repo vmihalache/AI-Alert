@@ -1,0 +1,219 @@
+.WindowAnimation canvas,
+.WindowAnimation svg {
+       position: relative;
+    z-index: 20
+
+}
+.WindowAnimation.hidden {
+    position: absolute;
+    z-index: 20;
+    left: 0;
+    top: 0 ;
+    opacity: 0
+    /* border: 5px solid red; */
+}
+.WindowAnimation.visible {
+    position: absolute;
+    z-index: 20;
+    left: 150px;
+    top: 100px;
+   animation: appear 2s ease-in-out;
+   animation-delay: 0s;
+   animation-fill-mode: forwards;
+}
+
+.WindSock {
+    bottom: -550px;
+    position: absolute;
+    z-index: 3;
+    left: -280px;
+}
+.WindowLottie {
+  position: absolute;
+    left: -200px;
+    top: 400px;
+    z-index: 1
+}
+.WindSock canvas,
+.WindSock svg {
+    position: relative;
+    z-index: 3;
+}
+/* .userOnboard {
+     width: max-content;
+    position: absolute;
+    top: 140px;
+    left: 480px;
+    font-weight: 600;
+letter-spacing: .5px;
+color: #5b7ea3;
+background: white;
+border: 1px solid #ccc;
+border-radius: 6px;
+animation: moveFlag 6s ease-in-out infinite;
+transform-origin: left center;
+z-index: 1;
+rotate: -5deg
+} */
+
+.thought-bubbles.hidden {
+    opacity: 0;
+    pointer-events: none;
+
+}
+.thought-bubbles.visible .thought-1 {
+   animation: appear 2s ease-in-out;
+   animation-delay: 0s;
+   animation-fill-mode: forwards;
+}
+
+.thought-bubbles.visible .thought-2 {
+   animation: appear 2s ease-in-out;
+   animation-delay: .4s;
+   animation-fill-mode: forwards;
+}
+
+.thought-cloud-wrapper.visible {
+    animation: appear 2s ease-in-out;
+    animation-delay: .6s;
+    animation-fill-mode: forwards;
+
+}
+.thought-cloud-wrapper {
+    top: 550px;
+    left: 800px;
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    opacity: 0;
+     transition: opacity .3s ease .6s;
+}
+.thought-cloud-wrapper.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+.cloud-content {
+    position: absolute;
+
+    top: 90px;
+    left: 110px;
+
+    width: 280px;
+    height: 300px;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    scrollbar-width: none;
+     -webkit-overflow-scrolling: touch;
+      /* border: 3px solid red; */
+    /* background: rgba(255,0,0,.1); */
+    user-select: none;
+     z-index: 10;
+     font-size: '16px'
+}
+
+.cloud-content::-webkit-scrollbar {
+    display: none;
+}
+
+.thought-1 {
+    top: 500px;
+    left: -500px;
+    width: 50px;
+    height: 50px;
+    color: blue;
+    position: relative; 
+    opacity: 0;
+
+}
+.thought-2 {
+    top: 500px;
+    left: -350px;
+    width: 50px;
+    height: 50px;
+        color: red;
+        position: relative;
+  opacity: 0;
+    transition: opacity .3s ease .3s;
+}
+.thought-cloud {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.speech-bubble p {
+    margin-bottom: 12px;
+}
+
+.speech-bubble strong {
+    font-weight: 700;
+}
+
+.speech-bubble ul {
+    padding-left: 24px;
+}
+
+.speech-bubble li {
+    margin-bottom: 10px;
+}
+.markdown-typewriter {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  line-height: 1.6;
+  color: #333;
+  width: 100%;
+  /* border: 3px solid blue; */
+}
+
+.markdown-typewriter h1 {
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+.markdown-typewriter code {
+  background-color: #f8f9fa;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+.weather-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.scroll-arrow-up {
+    position: absolute;
+    top: 70px;
+    right: -1px;
+    z-index: 10;
+    color: red
+}
+
+.scroll-arrow-down {
+    position: absolute;
+    bottom: 40px;
+    right: -1px;
+    z-index: 10;
+    color: red
+}
+
+/* animation for the thought bubbles to create a smooth "bubbling up" effect */
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes moveFlag {
+     0%   { transform: rotate(-1deg); }
+    50%  { transform: rotate(1deg); }
+    100% { transform: rotate(-1deg); }
+}

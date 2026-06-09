@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+}
+
+.child-one {
+  flex: 0 0 70%; /* Takes 25% of the container width */
+}
+
+.child-two {
+  flex: 0 0 30%; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 👈 Pulls the speech bubble down to the exact middle */
+  height: 100%;           /* Ensures it uses the full height next to the map */
+  padding-right: 40px; /* Keeps the speech bubble perfectly inside the viewing zone */
+}
