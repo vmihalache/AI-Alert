@@ -1,7 +1,7 @@
 import './WeatherBubble.css'
 import './weatherSpinner.css'
 import './analyst.css'
-import MarkdownTypewriter from './components/markdown-typewriter-react'
+import MarkdownTypewriter from './components/markdown-typewriter-react/dists'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import React from 'react';
 
