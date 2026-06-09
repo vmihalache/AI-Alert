@@ -38,7 +38,7 @@ function getWindowAnimation(text: string) {
   const word = firstMatch[0].toLowerCase();
 
   // Catch-all 2: It's a rain-type word -> return rain
-  if (["water", "rain", "flood", "rip", "currents", "waves", "beaches"].includes(word)) {
+  if (["water", "rain", "flood", "rip", "currents", "waves", "beaches", "storm", "thunder", "thunderstorm"].includes(word)) {
     return weatherAnimations.rain;
   }
   
