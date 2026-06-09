@@ -1,0 +1,110 @@
+{
+  "name": "markdown-typewriter-react",
+  "version": "1.2.5",
+  "description": "Typewriter animation for Markdown in React.",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "markdown",
+    "typewriter",
+    "animation",
+    "typewriter-effect",
+    "markdown-typewriter"
+  ],
+  "author": "Hardik Khandelwal <hardikkhandelwal500@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hardik500/markdown-typewriter-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hardik500/markdown-typewriter-react/issues"
+  },
+  "homepage": "https://github.com/Hardik500/markdown-typewriter-react#readme",
+  "demo": "https://hardik500.github.io/markdown-typewriter-react/",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.4",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "@vitest/coverage-v8": "^3.2.4",
+    "husky": "^9.1.7",
+    "jsdom": "^27.0.0",
+    "lint-staged": "^16.1.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "rimraf": "^6.0.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.5",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20.19.0",
+    "pnpm": ">=8.0.0"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "biome check --write --files-ignore-unknown=true"
+    ],
+    "example/**/*.{ts,tsx}": [
+      "biome check --write --files-ignore-unknown=true"
+    ],
+    "*.{json,md,css}": [
+      "biome check --write --files-ignore-unknown=true"
+    ]
+  },
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "start": "vite",
+    "dev": "vite",
+    "demo:build": "vite build",
+    "demo:preview": "vite preview --host",
+    "release": "./scripts/release.sh",
+    "release:patch": "./scripts/release.sh patch",
+    "release:minor": "./scripts/release.sh minor",
+    "release:major": "./scripts/release.sh major",
+    "changelog:update": "./scripts/update-changelog.sh",
+    "build": "tsup --config tsup.config.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "rimraf dist",
+    "lint": "biome lint .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format .",
+    "format:fix": "biome format --write ."
+  }
+}
