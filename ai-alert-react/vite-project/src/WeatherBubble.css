@@ -221,6 +221,9 @@ rotate: -5deg
 }
 /* MOBILE FIXES */
 @media (max-width: 768px) {
+       body {
+        border: 20px solid red !important;
+    }
     .thought-cloud-wrapper {
       position: absolute;
       width: 300px;
