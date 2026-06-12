@@ -27,12 +27,14 @@
     position: absolute;
     z-index: 3;
     left: -280px;
+    width: 1500px
 }
 .WindowLottie {
   position: absolute;
     left: -200px;
     top: 400px;
-    z-index: 1
+    z-index: 1;
+    width: 700px
 }
 .WindSock canvas,
 .WindSock svg {
@@ -216,4 +218,99 @@ rotate: -5deg
      0%   { transform: rotate(-1deg); }
     50%  { transform: rotate(1deg); }
     100% { transform: rotate(-1deg); }
+}
+/* MOBILE FIXES */
+@media (max-width: 768px) {
+    .thought-cloud-wrapper {
+      position: absolute;
+      width: 300px;
+      left: 20px;
+      top: 350px;
+      
+  }
+  .thought-cloud {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    left: 500px;
+    overflow-y: scroll !important; 
+      overflow-x: hidden;
+      user-select: text !important; /* Fixes the mobile WebKit scrolling gesture freeze */
+      pointer-events: auto;
+  }
+  .thought-1 { 
+     position: relative;
+     width: 50px;
+     top: 350px;
+     left: -210px;
+  }
+  .thought-2 { 
+     position: relative;
+     width: 50px;
+     top: 330px;
+     left: -100px
+  }
+.cloud-content {
+      position: relative;
+     width: 300px;
+      top: 100px;
+     left: 600px;
+     overflow-y: scroll !important; 
+      overflow-x: hidden;
+      user-select: text !important; /* Fixes the mobile WebKit scrolling gesture freeze */
+      pointer-events: auto;
+}
+
+   
+    .child-one {
+      position: absolute;
+      bottom: 500px;
+      width: 400px
+  }
+  .WindowLottie {
+     position: absolute;
+     width: 350px;
+      top: 450px;  
+      left: -100px;
+      pointer-events: none;
+    /* border: 10px solid blue; */
+
+  }
+  .WindowAnimation.visible {
+     position: absolute;
+      width: 350px;
+      top: 20px;
+      left: -15px;
+  }
+  /* .WindSock canvas,  */
+  /* .WindSock svg {
+   width: 500px;
+  
+
+  } */
+  .WindSock {
+    position: absolute;
+    width: 450px;
+    left: 50px;
+     top: -110px;
+     pointer-events: none;
+  }
+  /* .Analyst, */
+  /* .Analyst canvas {
+     border: 10px solid lime !important;
+  } */
+  /* .Analyst svg {
+     position: absolute;
+    width: 5000px;
+  } */
+ /* .Analyst {
+   width: 100px;
+} */
+ .Analyst {
+    width: 500px;
+    position: relative;
+    bottom: -450px;
+    left: 50px;
+    pointer-events: none;
+}
 }

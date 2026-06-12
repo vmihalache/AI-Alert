@@ -10,6 +10,7 @@ export const App = () => {
     const [apiResponse, setApiResponse] = useState("")
     const [isLoading, setLoadingState]=useState(false)
     const [animationKey, setAnimationKey] = useState(0);
+    const [isMobile, setMobile] = useState(false)
     const url = "https://ai-alert-production.up.railway.app/api/weather"
     const handleGetUsState = async (usStateParam: string) => {
         
@@ -31,8 +32,7 @@ export const App = () => {
         <div>
         <div className = "container" >
             <div className="child-one">
-            <MapChart appStateHandler={handleGetUsState} setAnimationKey = {setAnimationKey}
-             isLoading = {isLoading}
+            <MapChart appStateHandler={handleGetUsState} setAnimationKey = {setAnimationKey} isMobile={isMobile} setMobile={setMobile} isLoading={isLoading} 
             />
             </div>
             <div className="child-two">

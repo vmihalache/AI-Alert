@@ -6,12 +6,15 @@ export type MapChartProps = {
   appStateHandler: (state: string) => void;
   isLoading: boolean
   setAnimationKey: any
+  isMobile: boolean;
+  setMobile: any
+
 };
 
 const geoUrl =
   "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json"
 
-export default function MapChart({appStateHandler, isLoading, setAnimationKey}: MapChartProps) {
+export default function MapChart({appStateHandler, isLoading, setAnimationKey, isMobile, setMobile}: MapChartProps) {
   const [activeHoverState, setActiveHoverState] = useState<string | null>(null);
  async function handleStateClick(geoProp: any) {
     appStateHandler(geoProp.properties.name);
@@ -42,7 +45,7 @@ function getStateName(geo: any, currentFontSize: number) {
           const isThisStateHovered = activeHoverState === geo.properties.name;
           const coords = getCoordinates(geo);
           const safeCoords = [coords[0], coords[1]];
-          const dynamicSize = isThisStateHovered ? 9 : 6;
+          let dynamicSize = isThisStateHovered ? (isMobile ? 15 : 9) : 6;
 
           return (
             <React.Fragment key={geo.rsmKey}>
@@ -52,7 +55,7 @@ function getStateName(geo: any, currentFontSize: number) {
                   
                   default: { fill: "#2D3748", stroke: "#ffffff", strokeWidth: 0.5, outline: "none",     pointerEvents: isLoading ? "none" : "auto",
 },
-                  hover: { fill: "#4A5568", stroke: "#ffffff", strokeWidth: 0.5, outline: "none" ,    pointerEvents: isLoading ? "none" : "auto",
+                  hover: { fill: "#4A5568", stroke: "#ffffff", strokeWidth: 0.5, outline: "none" ,     pointerEvents: isLoading ? "none" : "auto",
 },
                   pressed: { fill: "#1A202C", stroke: "#ffffff", strokeWidth: 0.5, outline: "none",     pointerEvents: isLoading ? "none" : "auto",
 }
@@ -62,6 +65,11 @@ function getStateName(geo: any, currentFontSize: number) {
                 console.log("triggered hover for:", geo.properties.name);
                 setActiveHoverState(geo.properties.name);
               }}
+                onTouchStart={(e) => { setActiveHoverState(geo.properties.name);
+                  setMobile(true)
+                  
+                console.log("triggered hover for:", e);
+                 }}
               onMouseLeave={() => setActiveHoverState(null)}
               ></Geography>
               <Marker coordinates={safeCoords as [number, number]}>

@@ -30,24 +30,19 @@ export default function WeatherPanel({ responseProp, isLoading, animationKey }: 
 };
 function getWindowAnimation(text: string) {
   const lower = text.toLocaleLowerCase()
-  const firstMatch = lower.match(/\b(snow|fire|wind|water|rain|flood|rip|currents)\b/);
-
-  // Catch-all 1: No words found at all -> return sunny
+const firstMatch = lower.match(/\b(cold water|thunderstorm|thunder|snow|fire|wind|water|rain|flood|rip|beaches|storm|waves|dust|currents|cold|rivers)\b/);
   if (!firstMatch) return weatherAnimations.sunny;
 
   const word = firstMatch[0].toLowerCase();
 
-  // Catch-all 2: It's a rain-type word -> return rain
-  if (["water", "rain", "flood", "rip", "currents", "waves", "beaches", "storm", "thunder", "thunderstorm"].includes(word)) {
+  if (["water", "rain", "flood", "rip", "currents", "waves", "beaches", "storm", "thunder", "thunderstorm", "rivers", "cold water"].includes(word)) {
     return weatherAnimations.rain;
   }
   
-  // Handlers for the remaining individual words:
   if (word === "fire") return weatherAnimations.fire;
   if (word === "wind") return weatherAnimations.wind;
   if (word === "snow") return weatherAnimations.snow;
 
-  // Catch-all 3: Absolute emergency backup
   return weatherAnimations.sunny;
 
 }
@@ -59,7 +54,7 @@ const animationPath = getWindowAnimation(currentText);
         <div className="WindSock">
            <DotLottieReact
       src="lottieAnimation/redFlagLottie.json"
-       style={{ width: 1500}}
+      //  style={{ width: 1500}}
        autoplay
        loop
        speed={0.01}
@@ -78,7 +73,7 @@ const animationPath = getWindowAnimation(currentText);
   </div>
            { <DotLottieReact
       src="/lottieAnimation/windowLottie.json"
-       style={{ width: 700}}
+      //  style={{ width: 700}}
       loop
       autoplay
        dotLottieRefCallback={(dotLottie) => {
@@ -90,7 +85,7 @@ const animationPath = getWindowAnimation(currentText);
     <div className="Analyst">
          <DotLottieReact
       src="lottieAnimation/lottieAnalyst.json"
-       style={{ width: 700}}
+      //  style={{ width: 700}}
       loop
        dotLottieRefCallback={(dotLottie) => {
           dotLottieRefAnalyst.current = dotLottie;
