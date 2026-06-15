@@ -4,7 +4,7 @@
 
 **Scope:** Provides state-level weather alert monitoring for the US based on user queries.
 
-**Live API:** `https://ai-alert-production.up.railway.app/api/weather`
+**Live API:** `https://ai-alert-production.vercel.app/`
 
 ---
 
@@ -73,7 +73,7 @@ Allows the user to query historical weather data and observe alert trends over t
 | Express API Server | ✅ Implemented |
 | Railway Deployment | ✅ Live |
 | Neon PostgreSQL | ✅ Live |
-| React Frontend | 🔲 Not done |
+| React Frontend  |✅ Live   |
 
 ---
 
@@ -90,8 +90,71 @@ Content-Type: application/json
 }
 ```
 
+## React Frontend
+
+The application includes a React frontend that communicates with the Railway-hosted Express API.
+
+### Frontend Components
+
+#### App.tsx
+
+Coordinates communication between:
+
+* MapChart
+* WeatherPanel
+* HTTP Gateway
+
+Responsibilities:
+
+* State management
+* API request orchestration
+* Loading state handling
+* Weather response propagation
+
+#### MapChart
+
+Built with React Simple Maps.
+
+Responsibilities:
+
+* Display US state map
+* Handle hover interactions
+* Handle touch interactions for mobile devices
+* Trigger weather requests for selected states
+
+#### WeatherPanel
+
+Responsibilities:
+
+* Display AI-generated weather reports
+* Display loading animations
+* Display weather-specific Lottie animations
+* Render markdown responses using MarkdownTypewriter
+
+### Frontend Stack
+
+* React
+* TypeScript
+* React Simple Maps
+* D3 Geo
+* DotLottie
+* Markdown Typewriter
+* Railway API Integration
+
+### Frontend Request Flow
+
+User Click
+→ MapChart
+→ App.tsx
+→ HttpGateway
+→ Railway API
+→ MCP Pipeline
+→ AI Response
+→ WeatherPanel
+
+
 ---
 
 ## Stack
 
-TypeScript · Playwright · PostgreSQL (Neon) · Drizzle ORM · MCP SDK · Groq (Qwen3-32B) · NWS API · Express · Railway
+TypeScript · React · React Simple Maps · D3 Geo · DotLottie · Markdown Typewriter · Playwright · PostgreSQL (Neon) · Drizzle ORM · MCP SDK · Groq (Qwen3-32B) · NWS API · Express · Railway

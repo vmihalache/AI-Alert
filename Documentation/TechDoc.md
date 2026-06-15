@@ -178,9 +178,94 @@ Internal MCP communication (client → server) uses `localhost` within the Railw
 
 ---
 
+Frontend Architecture
+
+User
+│
+▼
+MapChart
+│
+▼
+App.tsx
+│
+▼
+HttpGateway
+│
+▼
+Railway API
+│
+▼
+WeatherPanel
+
+Frontend Components
+
+| Component          | Responsibility                                 |
+| ------------------ | ---------------------------------------------- |
+| App.tsx            | Central state management and API orchestration |
+| MapChart           | State selection and user interaction           |
+| WeatherPanel       | Weather visualization and response rendering   |
+| HttpGateway        | HTTP communication and retry logic             |
+| MarkdownTypewriter | Progressive markdown rendering                 |
+| DotLottie          | Weather and UI animations                      |
+
+Retry Logic
+
+The frontend contains retry protection for Railway requests.
+
+Configuration:
+
+* Default retries: 3
+* Retry delay: approximately 12 seconds
+* Purpose: prevent stale weather responses when backend resources are temporarily unavailable
+
+Mobile Support
+
+The frontend supports mobile devices through:
+
+* Touch state selection
+* Responsive CSS media queries
+* Dynamic label scaling
+* Mobile-specific animation positioning
+
+Weather Animation Mapping
+
+Weather responses are analyzed for keywords:
+
+Weather Animation Mapping
+
+The frontend analyzes AI-generated weather responses and selects an appropriate weather animation.
+
+Keywords evaluated:
+
+* cold water
+* thunderstorm
+* thunder
+* snow
+* fire
+* wind
+* water
+* rain
+* flood
+* rip
+* beaches
+* storm
+* waves
+* dust
+* currents
+* cold
+* rivers
+
+
+
+
+
+
 ## Known Limitations
 
 - Response consistency varies due to the non-deterministic nature of AI models
 - Queries must reference a US state name — city or coordinate queries not yet supported
 - Historical data queries not supported — current and near-future alerts only
-- Free tier rate limits apply on both Groq and Railway
+- Free tier rate limits apply on both Groq
+- Frontend weather animations rely on keyword matching and may not perfectly represent every alert scenario
+- Mobile interactions depend on touch events and state label scaling and may behave differently across devices
+- Frontend retry logic is tuned for Railway deployment behavior and may require adjustment if infrastructure changes

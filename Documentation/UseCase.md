@@ -21,3 +21,11 @@ Covers cities, villages and latitude/longitude geo information provided by the u
 ### UC3 — User can request a report for the last month to see the weather evolution 🔲 Pending
 
 Allows the user to query historical weather data and observe alert trends over time.
+
+## UC4 — User receives visual weather guidance through the React Frontend ✅ Implemented
+
+The user can select a US state on the rendered map and get a Railway response based on his input rendered in the frontend.
+
+## UC5 — User accesses the application from a mobile device ✅ Implemented
+
+Explicit element sizing and positionining rules were made for different mobile view proportions 
