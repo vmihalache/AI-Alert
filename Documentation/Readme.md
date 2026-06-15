@@ -29,6 +29,7 @@ The system uses a **Model Context Protocol (MCP) server** to connect a cloud-hos
 
 | Component | Status |
 |-----------|--------|
+| MCP Pipeline with Local AI | ✅ Implemented |
 | MCP Pipeline with Cloud AI (Groq) | ✅ Implemented |
 | Express API Server | ✅ Implemented |
 | Railway Deployment | ✅ Live |
@@ -114,11 +115,16 @@ User Click
 
 ## Use Cases
 
-### UC1 — User receives responses based on queries that include a State Name ✅ Implemented
-### UC2 — The Agent recognizes different location input types besides State Name 🔲 Pending
-### UC3 — User can request a report for the last month to see the weather evolution 🔲 Pending
-### UC4 — User receives visual weather guidance through the React Frontend ✅ Implemented
-### UC5 — User accesses the application from a mobile device ✅ Implemented
+### UC1 — User receives responses based on queries that include a State Name
+Status: ✅ Implemented
+### UC2 — The Agent recognizes different location input types besides State Name 
+Status: 🔲 Pending
+### UC3 — User can request a report for the last month to see the weather evolution 
+🔲 Pending
+### UC4 — User receives visual weather guidance through the React Frontend 
+Status: ✅ Implemented
+### UC5 — User accesses the application from a mobile device 
+Status: ✅ Implemented
 
 ---
 
