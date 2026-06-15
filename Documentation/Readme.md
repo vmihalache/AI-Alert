@@ -120,7 +120,7 @@ Status: ✅ Implemented
 ### UC2 — The Agent recognizes different location input types besides State Name 
 Status: 🔲 Pending
 ### UC3 — User can request a report for the last month to see the weather evolution 
-🔲 Pending
+Status: 🔲 Pending
 ### UC4 — User receives visual weather guidance through the React Frontend 
 Status: ✅ Implemented
 ### UC5 — User accesses the application from a mobile device 
