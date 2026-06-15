@@ -27,7 +27,7 @@ A local AI agent based system that draws results from the NWS (US National Weath
 |-----------|--------|
 | MCP Pipeline with Local AI | ✅ Implemented |
 | Express Endpoint Creation | ✅ Implemented
-| Production Deployment and Configuration ✅ Implemented
+| Production Deployment and Configuration | ✅ Implemented
 
 ## React Frontend Implementation Status
 

@@ -1,41 +1,61 @@
 # AI-Alert — Technical Documentation
 
----
+---  
 
 ## Architecture Overview
 
-```
-External Client (Postman / React)
-    │
-    ▼
+User (Desktop / Mobile Browser)
+│
+▼
+┌─────────────────────────────────────────┐
+│             React Frontend              │
+│                                         │
+│  ┌─────────────────────┐                │
+│  │      MapChart       │                │
+│  │ React Simple Maps   │                │
+│  └────────┬────────────┘                │
+│           │                             │
+│           ▼                             │
+│  ┌─────────────────────┐                │
+│  │       App.tsx       │                │
+│  │ State Management    │                │
+│  └────────┬────────────┘                │
+│           │                             │
+│           ▼                             │
+│  ┌─────────────────────┐                │
+│  │    HttpGateway      │                │
+│  │ Retry Logic         │                │
+│  └────────┬────────────┘                │
+└───────────┼─────────────────────────────┘
+│
+▼
 ┌─────────────────────────────────────────┐
 │            Railway Container            │
 │                                         │
 │  ┌─────────────────────┐                │
-│  │   Express Server    │  port $PORT    │
+│  │   Express Server    │                │
 │  │   /api/weather      │                │
 │  │   /mcp              │                │
 │  └────────┬────────────┘                │
 │           │                             │
 │           ▼                             │
 │  ┌─────────────────────┐                │
-│  │  MCP Client         │  localhost     │
-│  │  executeOrchestrated│  /mcp          │
+│  │     MCP Client      │                │
+│  │ executeOrchestrated │                │
 │  │       Flow()        │                │
 │  └────────┬────────────┘                │
 │           │                             │
 │           ▼                             │
 │  ┌─────────────────────┐                │
-│  │  WeatherOrchestrator│                │
-│  │  recursiveToolModel │                │
+│  │ WeatherOrchestrator │                │
+│  │ recursiveToolModel  │                │
 │  └────────┬────────────┘                │
 │           │                             │
 │           ▼                             │
 │  ┌─────────────────────┐                │
-│  │    MCP Server       │                │
-│  │  getStateCode       │                │
-│  │  ingestAlertsFor    │                │
-│  │       State         │                │
+│  │     MCP Server      │                │
+│  │   getStateCode      │                │
+│  │ ingestAlertsForState│                │
 │  └────────┬────────────┘                │
 │           │                             │
 │           ▼                             │
@@ -55,21 +75,20 @@ External Client (Postman / React)
 │  │    Drizzle ORM      │                │
 │  └─────────────────────┘                │
 └─────────────────┬───────────────────────┘
-                  │
-        ┌─────────┴──────────┐
-        ▼                    ▼
+│
+┌─────────┴──────────┐
+▼                    ▼
 ┌──────────────┐    ┌──────────────────┐
-│  Neon        │    │  Groq API        │
-│  PostgreSQL  │    │  Qwen3-32B       │
-│  (cloud)     │    │  (cloud)         │
+│ Neon         │    │ Groq API         │
+│ PostgreSQL   │    │ Qwen3-32B        │
+│ (cloud)      │    │ (cloud)          │
 └──────────────┘    └──────────────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │   NWS API        │
-                    │  (public, free)  │
-                    └──────────────────┘
-```
+│
+▼
+┌──────────────────┐
+│ NWS API          │
+│ Weather Alerts   │
+└──────────────────┘
 
 ---
 
