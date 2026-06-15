@@ -2,7 +2,7 @@
 class HttpGateway {
     constructor() {
     } 
-    async fetchData(url: string, method: string, requestBody?: {}, headersAdded?: {}, n: number = 4): Promise<any> {
+    async fetchData(url: string, method: string, requestBody?: {}, headersAdded?: {}, n: number = 3): Promise<any> {
         const fetchOptions: RequestInit = {
             method: method,
             headers: {
@@ -27,8 +27,8 @@ class HttpGateway {
         return responseJson.choices[0].message.content;
     } catch(err) {
         if (n === 1) throw err;
-        console.warn(`Request failed. Retries remaining: ${n - 1}. Waiting 3s...`);        
-        await new Promise(resolve => setTimeout(resolve, 25000));        
+        console.warn(`Request failed. Retries remaining: ${n - 1}. Waiting 5s...`);        
+        await new Promise(resolve => setTimeout(resolve, 12000));        
         return await this.fetchData(url, method, requestBody, {},  n - 1);
     }
     }
