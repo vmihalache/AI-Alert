@@ -303,7 +303,7 @@ rotate: -5deg
     position: absolute;
     width: 450px;
     left: -10px;
-    top: -60px;
+    top: 100px;
      pointer-events: none;
   }
   /* .Analyst, */
