@@ -130,7 +130,7 @@ const animationPath = getWindowAnimation(currentText);
       src="lottieAnimation/cloudLottie.json"
       autoplay
       loop
-      style={{ width: 300, height: 300 }}
+      // style={{ width: 300, height: 300 }}
        dotLottieRefCallback={(dotLottie) => {
         dotLottie?.setSpeed(5)
           dotLottieRefCloud.current = dotLottie;
@@ -145,7 +145,7 @@ const animationPath = getWindowAnimation(currentText);
             <div>
               <div className="scroll-arrow-up">▲</div>
             <MarkdownTypewriter
-              style={{ fontSize: '18px', lineHeight: '1.6' }}
+              // style={{ fontSize: '18px', lineHeight: '1.6' }}
               delay={10}
               markdown={currentText}
               charsPerTick={1}
