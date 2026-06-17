@@ -121,7 +121,7 @@ rotate: -5deg
 
 .thought-1 {
     top: 500px;
-    left: -500px;
+    left: 50px;
     width: 50px;
     height: 50px;
     color: blue;
@@ -131,7 +131,7 @@ rotate: -5deg
 }
 .thought-2 {
     top: 500px;
-    left: -350px;
+    left: -250px;
     width: 50px;
     height: 50px;
         color: red;
@@ -205,6 +205,18 @@ rotate: -5deg
     right: -1px;
     z-index: 10;
     color: red
+}
+.loading-container canvas {
+     margin-top: -50px;
+    position: relative;
+    width: 300px !important;
+    height: 300px !important;
+    top: 100px;
+}
+.loading-container {
+  top: -100px;
+  /* border: 10px solid lime !important; */
+  position: relative;
 }
 
 /* animation for the thought bubbles to create a smooth "bubbling up" effect */
@@ -303,7 +315,7 @@ rotate: -5deg
     position: absolute;
     width: 450px;
     left: -10px;
-    top: 100px;
+    top: 400px;
      pointer-events: none;
   }
   /* .Analyst, */
