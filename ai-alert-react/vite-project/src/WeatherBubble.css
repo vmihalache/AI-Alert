@@ -1,3 +1,6 @@
+html {
+    color-scheme: light;
+}
 .WindowAnimation canvas,
 .WindowAnimation svg {
        position: relative;
