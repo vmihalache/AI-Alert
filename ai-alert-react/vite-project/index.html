@@ -1,6 +1,14 @@
 <!doctype html>
 <html lang="en">
   <head>
+        <!-- avoiding chrome force dark mode -->
+    <script>
+      var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if(isDarkMode){
+        document.write(`<meta name="color-scheme" content="dark Only"><\/meta>`);
+      }
+    </script>
+    <meta name="color-scheme" content="light only">
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

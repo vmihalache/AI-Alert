@@ -1,5 +1,10 @@
 html {
-    color-scheme: light;
+  background-color: #ffffff !important;
+}
+
+body {
+  background-color: #ffffff !important;
+  color: #000000 !important;
 }
 .WindowAnimation canvas,
 .WindowAnimation svg {
