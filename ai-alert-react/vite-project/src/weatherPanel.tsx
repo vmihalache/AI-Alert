@@ -71,8 +71,15 @@ const animationPath = getWindowAnimation(currentText);
   autoplay
 />
   </div>
+   <div className="WindowFrame">
+   <img
+        className="Staticframe"
+        src="assets/Transparent-Window-Glass.jpg"
+        alt=""
+    />
+    <div className='cloudsLoop'>
            { <DotLottieReact
-      src="/lottieAnimation/windowLottie.json"
+      src="/lottieAnimation/cloudsLoop.json"
       //  style={{ width: 700}}
       loop
       autoplay
@@ -82,6 +89,9 @@ const animationPath = getWindowAnimation(currentText);
        }}
     /> }
     </div>
+    </div>
+    </div>
+    
     <div className="Analyst">
          <DotLottieReact
       src="lottieAnimation/lottieAnalyst.json"
@@ -116,9 +126,12 @@ const animationPath = getWindowAnimation(currentText);
   }`}>
     <img
         className="thought-cloud"
-        src="assets/cloudGood.jpg"
+        src="assets/cloudFormatted.png"
         alt=""
     />
+     <div className="scroll-arrow-up">▲</div>
+     <div className="scroll-arrow-down">▼</div>
+
      <div className="cloud-content">
        {isLoading ? (
         <div>
@@ -143,7 +156,7 @@ const animationPath = getWindowAnimation(currentText);
       ) : (
         
             <div>
-              <div className="scroll-arrow-up">▲</div>
+              {/* <div className="scroll-arrow-up">▲</div> */}
             <MarkdownTypewriter
               // style={{ fontSize: '18px', lineHeight: '1.6' }}
               delay={10}
@@ -153,7 +166,7 @@ const animationPath = getWindowAnimation(currentText);
                 dotLottieRefAnalyst.current?.stop()
               }}
             /> 
-              <div className="scroll-arrow-down">▼</div>
+              {/* <div className="scroll-arrow-down">▼</div> */}
 
             </div>     
       )}

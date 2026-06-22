@@ -17,9 +17,10 @@ export const App = () => {
         setLoadingState(true)        
           try {
         const question = { "question": `What is the weather in ${usStateParam}?`}
-        const result = await httpGateway.fetchData(url, "POST", question);
-        console.log("SETTING RESPONSE:", usStateParam, result);
-        setApiResponse(result);        
+        const result = await httpGateway.fetchData(url, "POST", question)
+        const formattedResponse = JSON.stringify(result, null, 2).replaceAll('\\n', '\n').replaceAll(/[{()}]/g, '');
+        console.log("SETTING RESPONSE:", usStateParam, formattedResponse);
+        setApiResponse(formattedResponse);        
         setLoadingState(false)
         console.log(apiResponse)
     }
