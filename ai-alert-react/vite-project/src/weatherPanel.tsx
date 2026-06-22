@@ -129,10 +129,10 @@ const animationPath = getWindowAnimation(currentText);
         src="assets/cloudFormatted.png"
         alt=""
     />
-     <div className="scroll-arrow-up">▲</div>
-     <div className="scroll-arrow-down">▼</div>
-
+     
      <div className="cloud-content">
+      <div className="scroll-arrow-up">▲</div>
+     <div className="scroll-arrow-down">▼</div>
        {isLoading ? (
         <div>
        

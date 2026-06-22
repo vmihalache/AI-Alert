@@ -401,12 +401,19 @@ rotate: -5deg
 }
 .scroll-arrow-up {
     position: absolute;
-    left: -260px;
-    top: -40px;
+    left:30px;
+    top: -9px;
+    color: red;
 }
 .scroll-arrow-down {
     position: absolute;
-    left: -260px;
-    top: -10px;
+    left: 40px;
+    top: -9px;
+    color: red;
+     /* border: 3px solid red; */
+      /* position: fixed !important;
+    left: 100px !important;
+    top: 100px !important;
+    z-index: 9999 !important; */
 }
 }
