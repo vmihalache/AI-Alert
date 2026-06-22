@@ -110,12 +110,12 @@ const animationPath = getWindowAnimation(currentText);
   }`}>
     <img
         className="thought-1"
-        src="assets/bubble1.jpg"
+        src="assets/bubble1transparent.png"
         alt=""
     />
     <img
         className="thought-2"
-        src="assets/bubble2.jpg"
+        src="assets/bubble2transparent.png"
         alt=""
     />
     </div>
