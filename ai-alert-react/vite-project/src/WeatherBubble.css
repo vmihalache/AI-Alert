@@ -287,14 +287,14 @@ rotate: -5deg
   .thought-1 { 
      position: relative;
      width: 50px;
-     top: 360px;
-     left: -145px;
+     top: 430px;
+     left: -220px;
   }
   .thought-2 { 
      position: relative;
      width: 50px;
-     top: 230px;
-     left: -160px
+     top: 360px;
+     left: -270px
   }
 .cloud-content {
       position: relative;
